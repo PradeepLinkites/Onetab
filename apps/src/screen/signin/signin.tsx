@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   useWindowDimensions,
   SafeAreaView,
+  Alert,
 } from "react-native";
 import {
   GoogleSignin,
@@ -18,12 +19,22 @@ import { RootRoutes } from "../../navigation/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { styles } from "./styles";
-import { authStoreActions, login, socialLogin } from "../../../store";
+import {
+  authStoreActions,
+  fetchCurrentWorkspace,
+  fetchWorkspaces,
+  getChatAccessToken,
+  getUser,
+  login,
+  socialLogin,
+  workspaceStoreActions,
+} from "../../../store";
 import { useToast } from "react-native-toast-notifications";
 import {
   AppleButton,
   appleAuth,
 } from "@invertase/react-native-apple-authentication";
+import { saveString } from "../../../utils/storage";
 // import jwt_decode from "jwt-decode";
 
 export const SignIn = () => {
@@ -33,9 +44,20 @@ export const SignIn = () => {
   const navigation = useNavigation<any>();
   const { width, height } = useWindowDimensions();
   const [user, setUser] = useState({});
-  const { loginData, loginStatus } = useSelector((state: any) => ({
+  const {
+    loginData,
+    loginStatus,
+    socialLoginData,
+    getUserData,
+    fetchWorkspaceData,
+    currentWorkspaceData,
+  } = useSelector((state: any) => ({
     loginData: state.authStore.loginData,
     loginStatus: state.authStore.loginStatus,
+    socialLoginData: state.authStore.socialLoginData,
+    getUserData: state.userStore.getUserData,
+    fetchWorkspaceData: state.workspaceStore.fetchWorkspaceData,
+    currentWorkspaceData: state.workspaceStore.currentWorkspaceData,
   }));
   const apiUp = true;
 
@@ -50,7 +72,79 @@ export const SignIn = () => {
     }
     return;
   }, [loginData]);
+  useEffect(() => {
+    if (socialLoginData.data !== undefined) {
+      dispatch(getUser());
+      dispatch(fetchWorkspaces());
+    }
+    return;
+  }, [socialLoginData]);
 
+  useEffect(() => {
+    if (fetchWorkspaceData.data !== undefined) {
+      if (fetchWorkspaceData.data.workspaces.length > 0) {
+        checkAndUpdateWorkspace();
+      } else {
+        // dispatch(workspaceStoreActions.setFetchWorkspaceStatus("not loaded"));
+        // dispatch(workspaceStoreActions.setFetchWorkspaceData({}));
+        // dispatch(workspaceStoreActions.setCurrentWorkspaceStatus("not loaded"));
+        // dispatch(workspaceStoreActions.setCurrentWorkspaceData({}));
+        // navigation.navigate(RootRoutes.Create_Workspace, {
+        //   userEmail: userEmail,
+        // });
+        Alert.alert("Plz first Create an accont");
+      }
+    }
+    return;
+  }, [fetchWorkspaceData]);
+
+  useEffect(() => {
+    if (currentWorkspaceData._id !== undefined) {
+      console.log("Matrix login calling 2");
+      loggedInIntoMatrix();
+      navigation.navigate(RootRoutes.Drawer);
+    }
+    return;
+  }, [currentWorkspaceData]);
+  
+  const loggedInIntoMatrix = () => {
+    if (
+      getUserData.data !== undefined &&
+      currentWorkspaceData._id !== undefined
+    ) {
+      dispatch(
+        getChatAccessToken({
+          matrixUsername: getUserData.data.userByToken.matrixUsername,
+          matrixPassword: getUserData.data.userByToken.matrixPassword,
+        })
+      );
+    }
+  };
+
+  useEffect(() => {
+    try {
+      if (getUserData.data !== undefined) {
+        checkAndUpdateWorkspace();
+      }
+    } catch (error) {
+      console.error("Home Error ==> ", error);
+    }
+  }, [getUserData]);
+
+  const checkAndUpdateWorkspace = async () => {
+    if (
+      getUserData.data !== undefined &&
+      fetchWorkspaceData.data !== undefined
+    ) {
+      const current = fetchWorkspaceData.data.workspaces.filter(
+        (item: any) =>
+          item.organizationId ===
+          getUserData.data.userByToken.activeOrganizationDomain
+      );
+      dispatch(fetchCurrentWorkspace(current[0]?._id));
+      await saveString("currentWorkspaceId", current[0]?._id);
+    }
+  };
   useEffect(() => {
     // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
     return appleAuth.onCredentialRevoked(async () => {
@@ -63,9 +157,9 @@ export const SignIn = () => {
   GoogleSignin.configure({
     scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
     webClientId:
-      "626734696093-c1lnr3hmaupofd742el8aqiaajvutd2q.apps.googleusercontent.com", // client ID of type WEB for your server. Required to get the idToken on the user object, and for offline access.
+      "861490928206-i2ohiaus31qqp2m7vfq9sgr8ll5htcp3.apps.googleusercontent.com", // client ID of type WEB for your server. Required to get the idToken on the user object, and for offline access.
     iosClientId:
-      "626734696093-t9q814l90r10g2ko706uf0atpras8br2.apps.googleusercontent.com",
+      "861490928206-bpuid91dk0gobpou2ii84oqndom69v1d.apps.googleusercontent.com",
     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
   });
 

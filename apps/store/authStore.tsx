@@ -141,6 +141,8 @@ interface authStoreState {
   verifyData: any;
   signUpStatus: "not loaded" | "loading" | "loaded" | "error";
   signUpData: any;
+  socialLoginStatus: "not loaded" | "loading" | "loaded" | "error";
+  socialLoginData: any;
 }
 
 export const initialAuthStoreState = authStoreAdapter.getInitialState({
@@ -152,6 +154,8 @@ export const initialAuthStoreState = authStoreAdapter.getInitialState({
   verifyData: {},
   signUpStatus: "not loaded",
   signUpData: {},
+  socialLoginStatus: "not loaded",
+  socialLoginData: {},
 } as authStoreState);
 export const authStoreSlice = createSlice({
   name: AUTH_FEATURE_KEY,
@@ -207,6 +211,21 @@ export const authStoreSlice = createSlice({
       })
       .addCase(verifyOtp.rejected, (state, action) => {
         state.verifyOtpStatus = "error";
+        state.error = action.error.message ?? "";
+      })
+      .addCase(socialLogin.pending, (state) => {
+        state.socialLoginStatus = "loading";
+      })
+      .addCase(socialLogin.fulfilled, (state, action) => {
+        state.socialLoginData = action.payload ?? {};
+        state.socialLoginStatus = "loaded";
+        console.log("token", action.payload?.data.socialLogin.token ?? "");
+        saveDeviceTokenToStorage({
+          deviceTokenId: action.payload?.data.socialLogin.token ?? "",
+        });
+      })
+      .addCase(socialLogin.rejected, (state, action) => {
+        state.socialLoginStatus = "error";
         state.error = action.error.message ?? "";
       })
       .addCase(signup.pending, (state) => {

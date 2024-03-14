@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   },
   logo_Style: {
     marginLeft: 20,
-    marginTop: 10,
+    marginTop: 15,
   },
   middlecontainer: {
     flex: 1,
