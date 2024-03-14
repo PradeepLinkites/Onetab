@@ -162,7 +162,10 @@ export const SignIn = () => {
             Sign In to Onetab
           </Text>
 
-          <TouchableOpacity style={styles.googleStyle} onPress={_googleSignIn}>
+          <TouchableOpacity
+            style={[styles.googleStyle, { marginTop: 22 }]}
+            onPress={_googleSignIn}
+          >
             <Google />
             <Text style={styles.googleText}>Sign in with Google</Text>
           </TouchableOpacity>
@@ -175,18 +178,11 @@ export const SignIn = () => {
             <Text style={styles.googleText}>Sign in with Apple</Text>
           </TouchableOpacity>
 
-          {/* <AppleButton
-            buttonStyle={AppleButton.Style.WHITE_OUTLINE}
-            textStyle={{ fontSize: 12, color: "red" }}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={styles.appleStyle}
-            onPress={() => onAppleButtonPress()}
-          /> */}
           <View style={styles.linecontainer}>
             <View
               style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
             />
-            <Text style={{ marginHorizontal: 10, color: "#C2C4C8" }}>or</Text>
+            <Text style={styles.ortext}>or</Text>
             <View
               style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
             />

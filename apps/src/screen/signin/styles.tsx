@@ -18,8 +18,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: "#171C26",
     textAlign: "center",
-    fontWeight: "500",
-    ////fontFamily: "PlusJakartaSans-Bold",
+    fontFamily: "PlusJakartaSans-Bold",
   },
   textStyle: {
     fontSize: 15,
@@ -31,7 +30,7 @@ export const styles = StyleSheet.create({
     borderColor: "#C0C6D3",
     borderRadius: 6,
     paddingLeft: 10,
-    //fontFamily: "PlusJakartaSans-Regular",
+    fontFamily: "PlusJakartaSans-Regular",
   },
   googleStyle:{
     height:46,
@@ -48,14 +47,16 @@ export const styles = StyleSheet.create({
   googleText: {
     color: "#070729",
     fontSize: 16,
-    fontWeight: "500",
-    marginLeft:15
-    ////fontFamily: "PlusJakartaSans-Bold",
+    marginLeft:15,
+    fontFamily: "PlusJakartaSans-Bold",
   },
   appleStyle: {
     width: '80%', // You must specify a width
     height:46, // You must specify a height
     marginTop: 15,
+  },
+  ortext:{
+    marginHorizontal: 10, color: "#C2C4C8", fontFamily: "PlusJakartaSans-Regular", fontSize: 16,
   },
   linecontainer: {
     marginVertical: 15,
@@ -84,7 +85,7 @@ export const styles = StyleSheet.create({
     color: "#F3F5F5",
     fontSize: 16,
     fontWeight: "400",
-    ////fontFamily: "PlusJakartaSans-Bold",
+    fontFamily: "PlusJakartaSans-Bold",
   },
   containerRow: {
     flexDirection: "row",
@@ -96,7 +97,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   need_Configure_X_Text_Style: {
-    //fontFamily: "PlusJakartaSans-Medium",
+    fontFamily: "PlusJakartaSans-Medium",
     color: "#656971",
     fontSize: 12,
     textAlign: "center",
@@ -114,21 +115,7 @@ export const styles = StyleSheet.create({
     color: "#3866E6",
     fontSize: 12,
     textAlign: "center",
-    ////fontFamily: "PlusJakartaSans-Bold",
+    fontFamily: "PlusJakartaSans-Bold",
     marginRight: 3,
-  },
-  emailInput: {
-    // color: "#FFFFFF",
-    // backgroundColor: "white",
-    // height:46,
-    // width: "80%",
-    // borderWidth: 2,
-    // borderColor: "#FFFFFF",
-    // borderRadius: 8,
-    // shadowColor: "#B0B9C3",
-    // shadowOffset: { width: 0, height: 1 },
-    // shadowOpacity: 0.4,
-    // shadowRadius: 1,
-    // marginTop: 29,
-  },
+  }
 });
