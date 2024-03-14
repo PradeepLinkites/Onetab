@@ -1,4 +1,10 @@
 PODS:
+  - AppAuth (1.7.2):
+    - AppAuth/Core (= 1.7.2)
+    - AppAuth/ExternalUserAgent (= 1.7.2)
+  - AppAuth/Core (1.7.2)
+  - AppAuth/ExternalUserAgent (1.7.2):
+    - AppAuth/Core
   - BEMCheckBox (1.4.1)
   - boost (1.83.0)
   - DoubleConversion (1.1.6)
@@ -13,6 +19,10 @@ PODS:
     - ExpoModulesCore
   - Expo (50.0.11):
     - ExpoModulesCore
+  - ExpoAdapterGoogleSignIn (11.0.0):
+    - ExpoModulesCore
+    - GoogleSignIn (~> 7.0)
+    - React-Core
   - ExpoFileSystem (16.0.8):
     - ExpoModulesCore
   - ExpoKeepAwake (12.8.2):
@@ -39,6 +49,14 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.73.4)
   - fmt (6.2.1)
   - glog (0.3.5)
+  - GoogleSignIn (7.0.0):
+    - AppAuth (~> 1.5)
+    - GTMAppAuth (< 3.0, >= 1.3)
+    - GTMSessionFetcher/Core (< 4.0, >= 1.1)
+  - GTMAppAuth (2.0.0):
+    - AppAuth/Core (~> 1.6)
+    - GTMSessionFetcher/Core (< 4.0, >= 1.5)
+  - GTMSessionFetcher/Core (3.3.1)
   - RCT-Folly (2022.05.16.00):
     - boost
     - DoubleConversion
@@ -1074,6 +1092,9 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - RNGoogleSignin (11.0.0):
+    - GoogleSignIn (~> 7.0)
+    - React-Core
   - RNReanimated (3.8.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1096,6 +1117,7 @@ DEPENDENCIES:
   - EXContacts (from `../node_modules/expo-contacts/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
   - Expo (from `../node_modules/expo`)
+  - "ExpoAdapterGoogleSignIn (from `../node_modules/@react-native-google-signin/google-signin/expo/ios`)"
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
@@ -1157,6 +1179,7 @@ DEPENDENCIES:
   - RNFileViewer (from `../node_modules/react-native-file-viewer`)
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -1164,8 +1187,12 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppAuth
     - BEMCheckBox
     - fmt
+    - GoogleSignIn
+    - GTMAppAuth
+    - GTMSessionFetcher
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1183,6 +1210,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-font/ios"
   Expo:
     :path: "../node_modules/expo"
+  ExpoAdapterGoogleSignIn:
+    :path: "../node_modules/@react-native-google-signin/google-signin/expo/ios"
   ExpoFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   ExpoKeepAwake:
@@ -1301,6 +1330,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNGoogleSignin:
+    :path: "../node_modules/@react-native-google-signin/google-signin"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -1311,6 +1342,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppAuth: ca2458caccec349cc1e26d8d9e8fd7d22f1d01f3
   BEMCheckBox: 5ba6e37ade3d3657b36caecc35c8b75c6c2b1a4e
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
@@ -1319,6 +1351,7 @@ SPEC CHECKSUMS:
   EXContacts: 5fcab84e1f1a562934e688d422117f9a33169c37
   EXFont: f20669cb266ef48b004f1eb1f2b20db96cd1df9f
   Expo: bbffa600c41f904151a925e5a214d1f4c5a79794
+  ExpoAdapterGoogleSignIn: ee39be2723cc5a39b3c01cb56d779831c975e17f
   ExpoFileSystem: eecaf6796aed0f4dd20042dc2ca2cac6c4bc1185
   ExpoKeepAwake: 0f5cad99603a3268e50af9a6eb8b76d0d9ac956c
   ExpoModulesCore: b2ae7a3fc6193556273c5db90065fbe7e11c7a60
@@ -1327,6 +1360,9 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: d0086a479be91c44ce4687a962956a352d2dc697
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
+  GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
+  GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
+  GTMSessionFetcher: 8a1b34ad97ebe6f909fb8b9b77fba99943007556
   RCT-Folly: 7169b2b1c44399c76a47b5deaaba715eeeb476c0
   RCTRequired: ab7f915c15569f04a49669e573e6e319a53f9faa
   RCTTypeSafety: 63b97ced7b766865057e7154db0e81ce4ee6cf1e
@@ -1379,6 +1415,7 @@ SPEC CHECKSUMS:
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   RNGestureHandler: deda62b8339496ba721a45e0f3e2d7a319932cee
+  RNGoogleSignin: fc408799f1990a12497a32f64280c0fe353ffcc1
   RNReanimated: a860676006d1c208811987c2a0f8eb21b8823fb6
   RNScreens: b582cb834dc4133307562e930e8fa914b8c04ef2
   RNSVG: 50cf2c7018e57cf5d3522d98d0a3a4dd6bf9d093

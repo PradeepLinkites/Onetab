@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Onetab",
-    "slug": "Onetab",
+    "name": "onetab",
+    "slug": "onetab",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,9 +14,11 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": ["@react-native-google-signin/google-signin"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.onetab.ios"
+      "bundleIdentifier": "com.onetab.ios",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +29,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "24fb8ba9-82dd-4344-9c69-7f48b0113a55"
+      }
+    },
+    "owner": "pradeep2020"
   }
 }
