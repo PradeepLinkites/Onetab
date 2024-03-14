@@ -48,3 +48,7 @@ export * from "./help_circle";
 export * from "./back_Icon";
 export * from "./lock";
 export * from "./back";
+export * from "./google";
+export * from "./apple";
+
+

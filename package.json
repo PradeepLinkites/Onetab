@@ -10,6 +10,7 @@
   "dependencies": {
     "@apollo/client": "^3.9.6",
     "@expo/webpack-config": "^19.0.1",
+    "@invertase/react-native-apple-authentication": "^2.3.0",
     "@react-native-async-storage/async-storage": "^1.22.3",
     "@react-native-camera-roll/camera-roll": "^7.5.0",
     "@react-native-community/checkbox": "^0.5.17",
@@ -35,6 +36,7 @@
     "expo-status-bar": "^1.11.1",
     "fbemitter": "^3.0.0",
     "graphql": "^16.8.1",
+    "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "matrix-js-sdk": "^31.5.0",
     "moment": "^2.30.1",

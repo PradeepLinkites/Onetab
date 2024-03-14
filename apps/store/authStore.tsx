@@ -56,7 +56,6 @@ export const login = createAsyncThunk(
   "auth/login",
   async (input: { email: string; isMobile: boolean }, thunkAPI) => {
     const { authQuery, authClient } = authService;
-   
     try {
       console.log("login.input", input);
       const data = await authClient.mutate({
@@ -67,6 +66,30 @@ export const login = createAsyncThunk(
       return data;
     } catch (error) {
       console.log("authQuery.login", error);
+      alert(error);
+      return undefined;
+    }
+  }
+);
+
+export const socialLogin = createAsyncThunk(
+  "auth/socialLogin",
+  async (
+    input: { code: string; loginFrom: string; isMobile: boolean },
+    thunkAPI
+  ) => {
+    const { authQuery, authClient } = authService;
+
+    try {
+      console.log("socialLogin payload==>>", input);
+      const data = await authClient.mutate({
+        mutation: authQuery.socialLogin,
+        variables: input,
+      });
+      console.log("socialLogin response==>>", JSON.stringify(data));
+      return data;
+    } catch (error) {
+      console.log("authQuery.sociallogin", error);
       alert(error);
       return undefined;
     }

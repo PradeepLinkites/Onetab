@@ -13,13 +13,18 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import { Logo } from "../../assets";
+import { Logo, Google, Apple } from "../../assets";
 import { RootRoutes } from "../../navigation/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { styles } from "./styles";
-import { authStoreActions, login } from "../../../store";
+import { authStoreActions, login, socialLogin } from "../../../store";
 import { useToast } from "react-native-toast-notifications";
+import {
+  AppleButton,
+  appleAuth,
+} from "@invertase/react-native-apple-authentication";
+// import jwt_decode from "jwt-decode";
 
 export const SignIn = () => {
   const dispatch = useDispatch<Dispatch<any>>();
@@ -46,6 +51,15 @@ export const SignIn = () => {
     return;
   }, [loginData]);
 
+  useEffect(() => {
+    // onCredentialRevoked returns a function that will remove the event listener. useEffect will call this function when the component unmounts
+    return appleAuth.onCredentialRevoked(async () => {
+      console.warn(
+        "If this function executes, User Credentials have been Revoked"
+      );
+    });
+  }, []); // passing in an empty array as the second argument ensures this is only ran once when component mounts initially.
+
   GoogleSignin.configure({
     scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
     webClientId:
@@ -55,12 +69,19 @@ export const SignIn = () => {
     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
   });
 
-  const _signIn = async () => {
+  const _googleSignIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log("userInfo==>>", userInfo);
+      // console.log("userInfo==>>", userInfo);
       // setState({ userInfo });
+      dispatch(
+        socialLogin({
+          code: userInfo.serverAuthCode,
+          loginFrom: "google",
+          isMobile: true,
+        })
+      );
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -73,6 +94,34 @@ export const SignIn = () => {
       }
     }
   };
+
+  async function onAppleButtonPress() {
+    try {
+      // setLoginStatus(true);
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        nonceEnabled: false,
+        requestedOperation: appleAuth.Operation.LOGIN,
+        // Note: it appears putting FULL_NAME first is important, see issue #293
+        requestedScopes: [appleAuth.Scope.FULL_NAME, appleAuth.Scope.EMAIL],
+      });
+      // get current authentication state for user
+      // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
+      const credentialState = await appleAuth.getCredentialStateForUser(
+        appleAuthRequestResponse.user
+      );
+      console.log("USER LOG APPLE", appleAuthRequestResponse);
+      const { identityToken, fullName, user } = appleAuthRequestResponse;
+      // const { email } = jwt_decode(identityToken);
+      console.log("email==>>", identityToken);
+      dispatch(
+        socialLogin({ code: identityToken, loginFrom: "apple", isMobile: true })
+      );
+      // use credentialState response to ensure the user is authenticated
+    } catch (error) {
+      // setLoginStatus(false);
+      console.log(error);
+    }
+  }
 
   const validation = (email: string | undefined) => {
     if (emailAddress !== "" && emailAddress !== undefined) {
@@ -112,18 +161,41 @@ export const SignIn = () => {
           >
             Sign In to Onetab
           </Text>
-          <GoogleSigninButton
-            style={{ marginTop: 15, height: 50 }}
-            size={GoogleSigninButton.Size.Wide}
-            onPress={_signIn}
-            // disabled={this.state.isSigninInProgress}
-          />
 
+          <TouchableOpacity style={styles.googleStyle} onPress={_googleSignIn}>
+            <Google />
+            <Text style={styles.googleText}>Sign in with Google</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.googleStyle}
+            onPress={() => onAppleButtonPress()}
+          >
+            <Apple />
+            <Text style={styles.googleText}>Sign in with Apple</Text>
+          </TouchableOpacity>
+
+          {/* <AppleButton
+            buttonStyle={AppleButton.Style.WHITE_OUTLINE}
+            textStyle={{ fontSize: 12, color: "red" }}
+            buttonType={AppleButton.Type.SIGN_IN}
+            style={styles.appleStyle}
+            onPress={() => onAppleButtonPress()}
+          /> */}
+          <View style={styles.linecontainer}>
+            <View
+              style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
+            />
+            <Text style={{ marginHorizontal: 10, color: "#C2C4C8" }}>or</Text>
+            <View
+              style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
+            />
+          </View>
           <TextInput
             onChangeText={(e: string) => {
               setEmailAddress(e.toLowerCase());
             }}
-            placeholderTextColor={"#8AA2CE"}
+            placeholderTextColor={"#A7B1BC"}
             placeholder="Enter email address"
             style={styles.textStyle}
             allowFontScaling={false}

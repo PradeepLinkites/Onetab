@@ -31,10 +31,6 @@ const login = gql`
   }
 `;
 
-// {
-//   "email": "abhilashparmar@gmail.com"
-// }
-
 const verifyOtp = gql`
   mutation verifyOtp($createAuthInput: CreateAuthInput!) {
     getToken(createAuthInput: $createAuthInput) {
