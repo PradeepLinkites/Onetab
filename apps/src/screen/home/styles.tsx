@@ -12,21 +12,20 @@ export const styles = StyleSheet.create({
   },
   pressableText: {
     flexDirection: "row",
-    alignItems: "flex-end",
-    marginVertical: 10,
+    marginVertical: 5,
+    paddingLeft:10
   },
   segementView: {
-    marginTop: 15,
-    marginBottom: 9,
+    marginTop: 10,
     paddingLeft: 7,
   },
   textStyle: {
-    marginLeft: 15,
+    marginLeft: 12,
     fontSize: 14,
     alignSelf: 'center',
     textAlign: 'left',
-    color: `#656971`,
-    //fontFamily: "PlusJakartaSans-Regular",
+    color: `#171C26`,
+    fontFamily: "PlusJakartaSans-Regular",
   },
   scrollStyle: {
     width: "100%",
@@ -37,7 +36,7 @@ export const styles = StyleSheet.create({
   },
   headingStyle: {
     fontSize: 12.5,
-    ////fontFamily: "PlusJakartaSans-Bold",
+    fontFamily: "PlusJakartaSans-Medium",
     color: "#171C26",
     paddingLeft: 8,
   },
@@ -97,5 +96,9 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1.5,
     borderColor: "#ffffff",
+  },
+  image: {
+    width: 14,
+    height: 14,
   },
 });

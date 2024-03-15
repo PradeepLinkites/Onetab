@@ -1,6 +1,13 @@
 //import liraries
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TextInput, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Keyboard,
+  Image,
+} from "react-native";
 import { RootRoutes } from "../navigation/routes";
 
 // create a component
@@ -19,6 +26,10 @@ export const SearchBar = ({
           clicked ? styles.searchBar__clicked : styles.searchBar__unclicked
         }
       >
+        <Image
+          source={require("../assets/icons/search.png")}
+          style={styles.image}
+        />
         <TextInput
           ref={inputRef}
           style={styles.input}
@@ -50,15 +61,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   searchBar__unclicked: {
-    // padding: 10,
+    padding: 10,
     flexDirection: "row",
     width: "97%",
     height: 40,
-    backgroundColor: "#F0F4F6",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
     borderRadius: 5,
-    // borderWidth: 1,
-    // borderColor: "d9dbda",
+    borderWidth: 0.5,
+    borderColor: "#656971",
   },
   searchBar__clicked: {
     padding: 10,
@@ -72,9 +83,14 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 14,
-    marginLeft: 10,
+    // marginLeft: 10,
     width: "90%",
-    //fontFamily: "PlusJakartaSans-Regular",
+    fontFamily: "PlusJakartaSans-Regular",
+  },
+  image: {
+    width: 18,
+    height: 18,
+    marginRight: 10,
   },
 });
 

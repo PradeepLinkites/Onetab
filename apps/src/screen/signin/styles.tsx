@@ -6,8 +6,8 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logo_Style: {
-    marginLeft: 20,
-    marginTop: 15,
+    marginTop: 30,
+    alignSelf: "center",
   },
   middlecontainer: {
     flex: 1,
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   signintext: {
-    fontSize: 18,
+    fontSize: 16,
     color: "#171C26",
     textAlign: "center",
     fontFamily: "PlusJakartaSans-Bold",
@@ -25,41 +25,53 @@ export const styles = StyleSheet.create({
     color: "#000000",
     backgroundColor: "#FFFFFF",
     height: 46,
-    width: '80%',
+    width: "80%",
     borderWidth: 1,
     borderColor: "#C0C6D3",
     borderRadius: 6,
     paddingLeft: 10,
     fontFamily: "PlusJakartaSans-Regular",
+    marginTop: 20,
   },
-  googleStyle:{
-    height:46,
+  googleStyle: {
+    height: 46,
     backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
     width: "80%",
     borderRadius: 6,
-    marginTop: 15,
+    marginTop: 20,
     borderWidth: 1,
     borderColor: "#C0C6D3",
-    flexDirection:'row',
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   googleText: {
     color: "#070729",
     fontSize: 16,
-    marginLeft:15,
-    fontFamily: "PlusJakartaSans-Bold",
+    marginLeft: 15,
+    fontFamily: "PlusJakartaSans-SemiBold",
   },
   appleStyle: {
-    width: '80%', // You must specify a width
-    height:46, // You must specify a height
-    marginTop: 15,
+    width: "80%", // You must specify a width
+    height: 46, // You must specify a height
+    marginTop: 20,
   },
-  ortext:{
-    marginHorizontal: 10, color: "#C2C4C8", fontFamily: "PlusJakartaSans-Regular", fontSize: 16,
+  ortext: {
+    color: "#C2C4C8",
+    fontFamily: "PlusJakartaSans-SemiBold",
+    fontSize: 16,
   },
   linecontainer: {
-    marginVertical: 15,
+    marginTop: 20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -73,12 +85,12 @@ export const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   signUpButton: {
-    width: '80%',
+    width: "80%",
     backgroundColor: "#00165F",
     marginTop: 22,
     alignItems: "center",
     borderRadius: 6,
-    height:46,
+    height: 46,
     justifyContent: "center",
   },
   testSignUp: {
@@ -117,5 +129,5 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "PlusJakartaSans-Bold",
     marginRight: 3,
-  }
+  },
 });

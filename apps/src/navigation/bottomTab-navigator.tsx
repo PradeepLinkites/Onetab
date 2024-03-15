@@ -142,7 +142,7 @@ export const BottomBar = (props) => {
                     <Text
                       style={{
                         fontSize: 20,
-                        //fontFamily: "PlusJakartaSans-ExtraBold",
+                        fontFamily: "PlusJakartaSans-ExtraBold",
                         color: "#ffffff",
                       }}
                     >
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
   },
   homeHeaderTitle: {
     fontSize: 20,
-    //fontFamily: "PlusJakartaSans-ExtraBold",
+    fontFamily: "PlusJakartaSans-Bold",
     color: "#ffffff",
   },
 });

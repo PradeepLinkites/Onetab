@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import React from "react";
 import { styles } from "../styles";
 
@@ -44,9 +44,8 @@ export const ChannelList = (props: ChannelListPropType) => {
         style={styles.headerPressableStyle}
       >
         <Text style={styles.headingStyle}>{"Channels"}</Text>
-
         <Animated.View style={animatedChannelIconStyle}>
-          <Ionicons name="chevron-down" size={24} color="black" />
+          <Ionicons name="chevron-down" size={22} color="black" />
         </Animated.View>
       </Pressable>
       <Animated.View style={animatedChannnellistStyle}>
@@ -57,7 +56,19 @@ export const ChannelList = (props: ChannelListPropType) => {
               style={[styles.itemContainerStyle, { paddingLeft: 5 }]}
               onPress={() => channelProgress.value === 1 && openChannel(item)}
             >
-              <Hash_Icon />
+              {/* <Hash_Icon /> */}
+              {item.name === "public channel" ? (
+                <Image
+                  source={require("../../../assets/icons/onetabIcon.png")}
+                  style={{ height: 18, width: 18, marginLeft: -3 }}
+                />
+              ) : (
+                <Image
+                  source={require("../../../assets/icons/hash.png")}
+                  style={styles.image}
+                />
+              )}
+
               {/* {item.status === channelStatus.active ? (
               <Octicons name="hash" size={20} color="#656971" />
             ) : (
@@ -77,7 +88,7 @@ export const ChannelList = (props: ChannelListPropType) => {
           <Octicons
             name="plus"
             size={20}
-            color="#656971"
+            color="#171C26"
             style={{
               paddingHorizontal: 3.5,
               paddingVertical: 2.5,

@@ -1,14 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
-  View,
+  // View,
   Text,
   TextInput,
   TouchableOpacity,
   useWindowDimensions,
   SafeAreaView,
   Alert,
-  KeyboardAvoidingView,
+  View,
   Platform,
 } from "react-native";
 import {
@@ -245,9 +245,9 @@ export const SignIn = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
+      <View
         style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        // behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.logo_Style}>
           <Logo />
@@ -261,31 +261,6 @@ export const SignIn = () => {
             Sign In to Onetab
           </Text>
 
-          <TouchableOpacity
-            style={[styles.googleStyle, { marginTop: 22 }]}
-            onPress={_googleSignIn}
-          >
-            <Google />
-            <Text style={styles.googleText}>Sign in with Google</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.googleStyle}
-            onPress={() => onAppleButtonPress()}
-          >
-            <Apple />
-            <Text style={styles.googleText}>Sign in with Apple</Text>
-          </TouchableOpacity>
-
-          <View style={styles.linecontainer}>
-            <View
-              style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
-            />
-            <Text allowFontScaling={false} style={styles.ortext}>or</Text>
-            <View
-              style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
-            />
-          </View>
           <TextInput
             onChangeText={(e: string) => {
               setEmailAddress(e.toLowerCase());
@@ -308,8 +283,35 @@ export const SignIn = () => {
               Sign In
             </Text>
           </TouchableOpacity>
+
+          <View style={styles.linecontainer}>
+            {/* <View
+              style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
+            /> */}
+            <Text allowFontScaling={false} style={styles.ortext}>OR</Text>
+            {/* <View
+              style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
+            /> */}
+          </View>
+
+          <TouchableOpacity
+            style={styles.googleStyle}
+            onPress={_googleSignIn}
+          >
+            <Google />
+            <Text allowFontScaling={false} style={styles.googleText}>Sign in with Google</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.googleStyle}
+            onPress={() => onAppleButtonPress()}
+          >
+            <Apple />
+            <Text allowFontScaling={false} style={styles.googleText}>Sign in with Apple</Text>
+          </TouchableOpacity>
+
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </SafeAreaView>
   );
 };

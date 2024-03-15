@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, Pressable, Alert } from "react-native";
+import { View, Text, ScrollView, Pressable, Alert, Image } from "react-native";
 import {
   AddMemberModal,
   Divider,
@@ -225,14 +225,14 @@ export const Home = () => {
             navigation={navigation}
           />
           <View style={styles.segementView}>
-            <Pressable
+            {/* <Pressable
               style={styles.pressableText}
               onPress={() => navigation.navigate(BottomRoutes.Mentions)}
             >
               <Icon_Mention />
               <Text style={[styles.textStyle, { fontSize: 15 }]}>Mentions</Text>
-            </Pressable>
-            <Pressable
+            </Pressable> */}
+            {/* <Pressable
               style={styles.pressableText}
               onPress={() => {
                 dispatch(resetThreadStatus({}));
@@ -241,13 +241,16 @@ export const Home = () => {
             >
               <Icon_Thread />
               <Text style={[styles.textStyle, { fontSize: 15 }]}>Threads</Text>
-            </Pressable>
+            </Pressable> */}
             <Pressable
               style={styles.pressableText}
               onPress={() => navigation.navigate(RootRoutes.Saved)}
             >
-              <Icon_Saved style={{ paddingRight: 16 }} />
-              <Text style={[styles.textStyle, { fontSize: 15 }]}>Saved</Text>
+              <Image
+                source={require("../../assets/icons/fileIcon.png")}
+                style={styles.image}
+              />
+              <Text style={[styles.textStyle, { fontSize: 15, color:'#171C26' }]}>Files</Text>
             </Pressable>
           </View>
         </View>
