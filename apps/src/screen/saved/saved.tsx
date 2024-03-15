@@ -289,7 +289,7 @@ export const Saved = () => {
   return (
     <View style={styles.container}>
       <MyStatusBar backgroundColor="#3866E6" />
-      <CustomHeader />
+      {/* <CustomHeader /> */}
       {savedListArray.length > 0 ? (
         <FlatList
           keyExtractor={(item: any) => item._id}

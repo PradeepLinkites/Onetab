@@ -72,7 +72,7 @@ export const AppList = (props: AppListPropType) => {
           <Octicons
             name="plus"
             size={20}
-            color="#656971"
+            color="#171C26"
             style={{
               paddingHorizontal: 5,
               paddingVertical: 2.5,

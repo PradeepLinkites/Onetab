@@ -60,7 +60,7 @@ export const ChannelList = (props: ChannelListPropType) => {
               {item.name === "public channel" ? (
                 <Image
                   source={require("../../../assets/icons/onetabIcon.png")}
-                  style={{ height: 18, width: 18, marginLeft: -3 }}
+                  style={{ height: 18, width: 20, marginLeft: -5 }}
                 />
               ) : (
                 <Image

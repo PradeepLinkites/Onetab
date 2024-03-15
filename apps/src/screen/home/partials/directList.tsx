@@ -51,7 +51,7 @@ export const DirectList = (props: DirectListPropType) => {
         <Text style={styles.headingStyle}>{"Direct messages"}</Text>
 
         <Animated.View style={animatedDMIconStyle}>
-          <Ionicons name="chevron-down" size={24} color="black" />
+          <Ionicons name="chevron-down" size={22} color="black" />
         </Animated.View>
       </Pressable>
       <Animated.View style={animatedDMlistStyle}>
@@ -116,7 +116,7 @@ export const DirectList = (props: DirectListPropType) => {
           <Octicons
             name="plus"
             size={20}
-            color="#656971"
+            color="#171C26"
             style={{
               paddingHorizontal: 4,
               paddingVertical: 2.5,

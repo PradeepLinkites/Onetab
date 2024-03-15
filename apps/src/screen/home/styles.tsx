@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
     paddingVertical: 10,
     alignItems: "center",
     backgroundColor: "#ffffff",
@@ -13,7 +12,8 @@ export const styles = StyleSheet.create({
   pressableText: {
     flexDirection: "row",
     marginVertical: 5,
-    paddingLeft:10
+    paddingLeft:10,
+    alignItems:'center'
   },
   segementView: {
     marginTop: 10,

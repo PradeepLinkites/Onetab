@@ -4,6 +4,7 @@ export enum BottomRoutes {
   Mentions = "Mentions",
   Search = "Search",
   You = "You",
+  Saved = "Saved"
 }
 export enum RootRoutes {
   Verification_Screen = "Verification_Screen",

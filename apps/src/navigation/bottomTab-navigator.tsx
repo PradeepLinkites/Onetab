@@ -5,7 +5,7 @@ import {
   useFocusEffect,
   useNavigation,
 } from "@react-navigation/native";
-import { DMs, Home, Mentions, Search, You } from "../screen";
+import { DMs, Home, Mentions, Search, You, Saved } from "../screen";
 import { BottomRoutes } from "./routes";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import {
@@ -19,6 +19,8 @@ import {
   SearchInactive,
   YouActive,
   YouInactive,
+  Icon_Saved,
+  Icon_Saved_Active,
 } from "../assets";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -103,10 +105,9 @@ export const BottomBar = (props) => {
         tabBarActiveTintColor: "#399BAC",
         tabBarInactiveTintColor: "#BDBDBD",
         headerShown: true,
-        headerStyle: { backgroundColor: "#3866E6" },
-        tabBarStyle: {
-          elevation: 0,
-          shadowOffset: { width: 0, height: 0 },
+        headerStyle: { backgroundColor: "#00165F", height: 70 },
+        tabBarItemStyle: {
+          marginBottom: 8,
         },
       }}
     >
@@ -126,26 +127,16 @@ export const BottomBar = (props) => {
               <Pressable
                 key={organisationData._id}
                 onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-                style={{ padding: 3, marginRight: -10 }}
+                style={{
+                  marginRight: -10,
+                  marginLeft: 12,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
                 {organisationData.organizationLogo !== " " ? (
-                  <View
-                    style={{
-                      height: "100%",
-                      aspectRatio: 1,
-                      backgroundColor: "#989898",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: 7,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        fontFamily: "PlusJakartaSans-ExtraBold",
-                        color: "#ffffff",
-                      }}
-                    >
+                  <View style={styles.headerIconStyle}>
+                    <Text style={styles.headername}>
                       {organisationData.name.substring(0, 1)}
                     </Text>
                   </View>
@@ -174,17 +165,92 @@ export const BottomBar = (props) => {
           },
           tabBarLabelStyle: {
             justifyContent: "center",
-            //fontFamily: "PlusJakartaSans-SemiBold",
-            fontSize: 12.5,
-            lineHeight: 16,
+            fontFamily: "PlusJakartaSans-SemiBold",
+            fontSize: 10,
           },
           tabBarActiveTintColor: "#171C26",
           tabBarInactiveTintColor: "#606363",
           tabBarIcon: ({ focused }) =>
-            focused ? <HomeActive /> : <HomeInactive />,
+            focused ? (
+              <Image
+                source={require("../assets/icons/home_icon_active.png")}
+                style={styles.image}
+              />
+            ) : (
+              <Image
+                source={require("../assets/icons/home_icon.png")}
+                style={styles.image}
+              />
+            ),
         }}
       />
       <Tab.Screen
+        name={BottomRoutes.Saved}
+        component={Saved}
+        listeners={({ navigation }) => ({})}
+        options={{
+          headerShown: true,
+          tabBarAccessibilityLabel: "Mentions Screen",
+          tabBarStyle: {
+            backgroundColor: "#FFFFFF",
+            borderTopColor: "transparent",
+            borderTopWidth: 0,
+          },
+          headerTitleStyle: styles.headerTitle,
+          headerTitleAlign: "left",
+          tabBarLabelStyle: {
+            justifyContent: "center",
+            fontFamily: "PlusJakartaSans-SemiBold",
+            fontSize: 10,
+          },
+          tabBarActiveTintColor: "#171C26",
+          tabBarInactiveTintColor: "#606363",
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <Image
+                source={require("../assets/icons/saved_icon_active.png")}
+                style={{ height: 20, width: 16 }}
+              />
+            ) : (
+              <Image
+                source={require("../assets/icons/saved_icon.png")}
+                style={styles.image}
+              />
+            ),
+        }}
+      />
+      <Tab.Screen
+        name={BottomRoutes.You}
+        component={You}
+        listeners={({ navigation }) => ({})}
+        options={{
+          tabBarAccessibilityLabel: "You Screen",
+          tabBarStyle: {
+            backgroundColor: "#FFFFFF",
+            borderTopColor: "transparent",
+            borderTopWidth: 0,
+          },
+          headerTitleStyle: styles.headerTitle,
+          headerTitleAlign: "left",
+          tabBarLabelStyle: {
+            justifyContent: "center",
+            fontFamily: "PlusJakartaSans-SemiBold",
+            fontSize: 10,
+          },
+          tabBarActiveTintColor: "#171C26",
+          tabBarInactiveTintColor: "#606363",
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <YouActive />
+            ) : (
+              <Image
+                source={require("../assets/icons/you_icon.png")}
+                style={styles.image}
+              />
+            ),
+        }}
+      />
+      {/* <Tab.Screen
         name={BottomRoutes.DMs}
         component={DMs}
         listeners={({ navigation }) => ({})}
@@ -234,7 +300,7 @@ export const BottomBar = (props) => {
           tabBarIcon: ({ focused }) =>
             focused ? <MentionActive /> : <MentionInactive />,
         }}
-      />
+      /> */}
       {/* <Tab.Screen
         name={BottomRoutes.Search}
         component={Search}
@@ -259,31 +325,6 @@ export const BottomBar = (props) => {
             focused ? <SearchActive /> : <SearchInactive />,
         }}
       /> */}
-      <Tab.Screen
-        name={BottomRoutes.You}
-        component={You}
-        listeners={({ navigation }) => ({})}
-        options={{
-          tabBarAccessibilityLabel: "You Screen",
-          tabBarStyle: {
-            backgroundColor: "#FFFFFF",
-            borderTopColor: "transparent",
-            borderTopWidth: 0,
-          },
-          headerTitleStyle: styles.headerTitle,
-          headerTitleAlign: "left",
-          tabBarLabelStyle: {
-            justifyContent: "center",
-            //fontFamily: "PlusJakartaSans-SemiBold",
-            fontSize: 12.5,
-            lineHeight: 16,
-          },
-          tabBarActiveTintColor: "#171C26",
-          tabBarInactiveTintColor: "#606363",
-          tabBarIcon: ({ focused }) =>
-            focused ? <YouActive /> : <YouInactive />,
-        }}
-      />
     </Tab.Navigator>
   );
 };
@@ -300,6 +341,23 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   homeHeaderTitle: {
+    fontSize: 20,
+    fontFamily: "PlusJakartaSans-Bold",
+    color: "#ffffff",
+  },
+  image: {
+    width: 25,
+    height: 22,
+  },
+  headerIconStyle: {
+    height: 28,
+    width: 28,
+    backgroundColor: "#989898",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 7,
+  },
+  headername: {
     fontSize: 20,
     fontFamily: "PlusJakartaSans-Bold",
     color: "#ffffff",
