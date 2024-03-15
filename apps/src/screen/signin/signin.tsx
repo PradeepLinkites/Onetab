@@ -8,6 +8,8 @@ import {
   useWindowDimensions,
   SafeAreaView,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import {
   GoogleSignin,
@@ -106,7 +108,7 @@ export const SignIn = () => {
     }
     return;
   }, [currentWorkspaceData]);
-  
+
   const loggedInIntoMatrix = () => {
     if (
       getUserData.data !== undefined &&
@@ -243,7 +245,10 @@ export const SignIn = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
         <View style={styles.logo_Style}>
           <Logo />
         </View>
@@ -276,7 +281,7 @@ export const SignIn = () => {
             <View
               style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
             />
-            <Text style={styles.ortext}>or</Text>
+            <Text allowFontScaling={false} style={styles.ortext}>or</Text>
             <View
               style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
             />
@@ -304,7 +309,7 @@ export const SignIn = () => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
