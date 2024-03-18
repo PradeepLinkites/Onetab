@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, Pressable, Alert, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  Alert,
+  Image,
+  StatusBar,
+} from "react-native";
 import {
   AddMemberModal,
   Divider,
@@ -212,6 +220,8 @@ export const Home = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar animated={true} barStyle="light-content" hidden={false} />
+
       <ScrollView
         style={styles.scrollStyle}
         showsVerticalScrollIndicator={false}
@@ -250,7 +260,11 @@ export const Home = () => {
                 source={require("../../assets/icons/fileIcon.png")}
                 style={styles.image}
               />
-              <Text style={[styles.textStyle, { fontSize: 15, color:'#171C26' }]}>Files</Text>
+              <Text
+                style={[styles.textStyle, { fontSize: 15, color: "#171C26" }]}
+              >
+                Files
+              </Text>
             </Pressable>
           </View>
         </View>

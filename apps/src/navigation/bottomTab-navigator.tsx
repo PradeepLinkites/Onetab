@@ -105,7 +105,8 @@ export const BottomBar = (props) => {
         tabBarActiveTintColor: "#399BAC",
         tabBarInactiveTintColor: "#BDBDBD",
         headerShown: true,
-        headerStyle: { backgroundColor: "#00165F", height: 70 },
+        headerStyle: { backgroundColor: "#00165F" },
+        // headerStyle: { backgroundColor: "#00165F", height: 70 },
         tabBarItemStyle: {
           marginBottom: 8,
         },
