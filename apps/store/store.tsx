@@ -38,9 +38,9 @@ export const getCircularReplacer = () => {
 export const getUserNameForDirectMessage = (item: any) => {
   if (item !== null && item.matrixRoomEvent != null) {
     const myUserId = item.matrixRoomEvent.myUserId;
-    var otherUserId = "";
+    let otherUserId = "";
     item.matrixRoomInfo.members.map((items: any) => {
-      if (items !== myUserId) {
+      if (items !== myUserId && items !== "@onetabadmin:matrix.onetab.ai") {
         otherUserId = items;
       }
     });

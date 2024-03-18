@@ -42,6 +42,8 @@ export const DirectList = (props: DirectListPropType) => {
     };
   }, [directMessageList.length]);
 
+  console.log("###############: ", directMessageList[0]);
+
   return (
     <View style={styles.contentViewStyle}>
       <Pressable
