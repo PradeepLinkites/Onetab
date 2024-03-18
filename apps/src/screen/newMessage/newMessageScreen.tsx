@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,7 +7,6 @@ import {
   Platform,
   StatusBar,
 } from "react-native";
-import React, { useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";

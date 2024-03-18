@@ -105,6 +105,7 @@ export const HtmlEditorView = (props) => {
   const [recording, setRecording] = React.useState<any>();
   const [pauseState, setPauseState] = React.useState<any>(false);
   const [recordingStart, setRecordingStart] = React.useState<any>();
+  const regex = /@[a-zA-Z]+(?![\w\s])/;
   const { uploadFilesStatus, uploadedFiles, room, typingEvent } = useSelector(
     (state: any) => ({
       uploadFilesStatus: state.chatStore.uploadFilesStatus,
@@ -135,7 +136,7 @@ export const HtmlEditorView = (props) => {
       <Text
         key={data + key}
         style={{
-          ////fontFamily: "PlusJakartaSans-Bold",
+          fontFamily: "PlusJakartaSans-Bold",
           fontSize: 14,
           color: "#000000",
           paddingLeft: 10,
@@ -150,7 +151,7 @@ export const HtmlEditorView = (props) => {
         getTypingStatus().length !== key + 1 ? (
           <Text
             style={{
-              //fontFamily: "PlusJakartaSans-Regular",
+              fontFamily: "PlusJakartaSans-Regular",
               fontSize: 14,
               color: "#000000",
             }}
@@ -160,7 +161,7 @@ export const HtmlEditorView = (props) => {
         ) : (
           <Text
             style={{
-              //fontFamily: "PlusJakartaSans-Regular",
+              fontFamily: "PlusJakartaSans-Regular",
               fontSize: 14,
               color: "#000000",
             }}
@@ -179,7 +180,7 @@ export const HtmlEditorView = (props) => {
   //   }else if(getTypingStatus().length === 1){
   //     <Text
   //       style={{
-  //         ////fontFamily: "PlusJakartaSans-Bold",
+  //         fontFamily: "PlusJakartaSans-Bold",
   //         fontSize: 14,
   //         color: "#000000",
   //         paddingLeft: 10,
@@ -192,7 +193,7 @@ export const HtmlEditorView = (props) => {
   //       {getTypingStatus()[0].rawDisplayName}
   //        <Text
   //           style={{
-  //             //fontFamily: "PlusJakartaSans-Regular",
+  //             fontFamily: "PlusJakartaSans-Regular",
   //             fontSize: 14,
   //             color: "#000000",
   //           }}
@@ -203,7 +204,7 @@ export const HtmlEditorView = (props) => {
   //   }else{
   //     <Text
   //       style={{
-  //         ////fontFamily: "PlusJakartaSans-Bold",
+  //         fontFamily: "PlusJakartaSans-Bold",
   //         fontSize: 14,
   //         color: "#000000",
   //         paddingLeft: 10,
@@ -216,7 +217,7 @@ export const HtmlEditorView = (props) => {
   //       {getTypingStatus().length + " Peoples"}
   //        <Text
   //           style={{
-  //             //fontFamily: "PlusJakartaSans-Regular",
+  //             fontFamily: "PlusJakartaSans-Regular",
   //             fontSize: 14,
   //             color: "#000000",
   //           }}
@@ -647,7 +648,7 @@ export const HtmlEditorView = (props) => {
                     marginLeft: 10,
                     fontWeight: "900",
                     width: 150,
-                    //fontFamily: "PlusJakartaSans-SemiBold",
+                    fontFamily: "PlusJakartaSans-SemiBold",
                   }}
                   allowFontScaling
                 >
@@ -836,11 +837,19 @@ export const HtmlEditorView = (props) => {
                         ) {
                           setSendShowButton(true);
                           setTextMessage(descriptionText);
-
-                          if (descriptionText.includes("@")) {
+                          const replacedText = descriptionText.replace(
+                            /&nbsp;/g,
+                            " "
+                          );
+                          const mentions = replacedText.match(regex);
+                          console.log("match===>>", mentions, descriptionText);
+                          if (mentions !== null) {
                             setTaggingModal(true);
                             setTextMessage(descriptionText);
-                            console.log("descriptionText", textMessage);
+                            // console.log("descriptionText", textMessage);
+                          } else {
+                            // console.log("changed way");
+                            setTaggingModal(false);
                           }
 
                           dispatch(
@@ -1016,7 +1025,7 @@ export const HtmlEditorView = (props) => {
                   {pauseState ? (
                     <Ionicons name="play" size={24} color="green" />
                   ) : (
-                    <Ionicons name="ios-pause" size={24} color="red" />
+                    <Ionicons name="pause" size={24} color="red" />
                   )}
                 </Pressable>
               )}
@@ -1090,7 +1099,7 @@ const styles = StyleSheet.create({
   },
   settingItemTitle: {
     fontSize: 14,
-    //fontFamily: "PlusJakartaSans-Regular",
+    fontFamily: "PlusJakartaSans-Regular",
     color: "#656971",
     marginLeft: 10,
   },
@@ -1108,7 +1117,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 12,
-    //fontFamily: "PlusJakartaSans-Regular",
+    fontFamily: "PlusJakartaSans-Regular",
     color: "#171C26",
   },
   msgUserPic: {
@@ -1123,7 +1132,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     color: "#171C26",
-    //fontFamily: "PlusJakartaSans-SemiBold",
+    fontFamily: "PlusJakartaSans-SemiBold",
   },
   dateView: {
     fontSize: 10,
@@ -1131,13 +1140,13 @@ const styles = StyleSheet.create({
     color: "#B0B1B1",
     marginLeft: 5,
     justifyContent: "center",
-    //fontFamily: "PlusJakartaSans-Semibold",
+    fontFamily: "PlusJakartaSans-Semibold",
   },
   highlightedText: {
     fontSize: 14,
     fontWeight: "400",
     color: "#656971",
-    //fontFamily: "PlusJakartaSans-Regular",
+    fontFamily: "PlusJakartaSans-Regular",
   },
   emojiContainer: {
     flexDirection: "row",
@@ -1178,7 +1187,7 @@ const styles = StyleSheet.create({
     color: "#B0B1B1",
     fontSize: 10,
     fontWeight: "600",
-    //fontFamily: "PlusJakartaSans-Semibold",
+    fontFamily: "PlusJakartaSans-Semibold",
     textTransform: "uppercase",
   },
   halfDivider: {
@@ -1205,7 +1214,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#171C26",
     marginLeft: 8,
-    //fontFamily: "PlusJakartaSans-Semibold",
+    fontFamily: "PlusJakartaSans-Semibold",
   },
   headerDetailView: {
     fontSize: 10,
@@ -1240,7 +1249,7 @@ const styles = StyleSheet.create({
   addPeopleText: {
     color: "#3866E6",
     fontSize: 12,
-    //fontFamily: "PlusJakartaSans-SemiBold",
+    fontFamily: "PlusJakartaSans-SemiBold",
   },
   searchContainer: {
     width: "48%",
@@ -1264,12 +1273,12 @@ const styles = StyleSheet.create({
   memberText: {
     color: "#171C26",
     fontSize: 12,
-    //fontFamily: "PlusJakartaSans-Medium",
+    fontFamily: "PlusJakartaSans-Medium",
   },
   settingsText: {
     color: "#171C26",
     fontSize: 12,
-    //fontFamily: "PlusJakartaSans-Medium",
+    fontFamily: "PlusJakartaSans-Medium",
     paddingHorizontal: 20,
     marginTop: 10,
   },
@@ -1286,7 +1295,7 @@ const styles = StyleSheet.create({
   leaveChannelText: {
     color: "#F3F5F5",
     fontSize: 14,
-    ////fontFamily: "PlusJakartaSans-Bold",
+    fontFamily: "PlusJakartaSans-Bold",
     paddingLeft: 10,
   },
   msgListView: {

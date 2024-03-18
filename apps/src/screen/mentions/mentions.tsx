@@ -11,7 +11,7 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 
-import HighlightText from "@sanar/react-native-highlight-text";
+import HighlightText  from "@sanar/react-native-highlight-text";
 import { Divider, NewMessageBubble } from "../../components";
 import { styles } from "./styles";
 import { NewMessageScreen } from "../newMessage";
@@ -95,9 +95,11 @@ export const Mentions = () => {
           >
             <View style={styles.titleView}>
               <HighlightText
-                highlightStyle={{
-                  //fontFamily: "PlusJakartaSans-SemiBold",
-                }}
+                highlightStyle={
+                  {
+                    //fontFamily: "PlusJakartaSans-SemiBold",
+                  }
+                }
                 searchWords={[item.mentionBy]}
                 textToHighlight={
                   item.mentionBy + " mentioned you in " + item.mentionIn

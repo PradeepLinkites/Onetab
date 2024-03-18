@@ -48,6 +48,7 @@ import { Dispatch } from "redux";
 import { sendFiles, sendMessage } from "../../../store";
 import { MessageOptionModal } from "./message_option_modal";
 import { createClient } from "matrix-js-sdk";
+import { TaggingModal } from "./taggingModel";
 
 interface OptionDataType {
   title: string;
@@ -1243,14 +1244,14 @@ export const ChannelMessage = (props: any) => {
           }
         />
 
-        {/* <TaggingModal
+        <TaggingModal
           showModal={taggingModal}
           setShowModal={setTaggingModal}
           memberData={RoomInfo}
           textMessage={textMessage}
           setTextMessage={setTextMessage}
           onDataChanged={handleDataChange}
-        /> */}
+        />
 
         {loaderVisible === true ? (
           <View

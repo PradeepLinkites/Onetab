@@ -46,6 +46,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { sendFiles, sendMessage } from "../../../store";
 import { MessageOptionModal } from "./message_option_modal";
+import { TaggingModal } from "./taggingModel";
 
 interface OptionDataType {
   title: string;
@@ -1227,14 +1228,14 @@ export const DirectMessage = (props: any) => {
           }
         />
 
-        {/* <TaggingModal
+        <TaggingModal
           showModal={taggingModal}
           setShowModal={setTaggingModal}
           memberData={RoomInfo}
           textMessage={textMessage}
           setTextMessage={setTextMessage}
           onDataChanged={handleDataChange}
-        /> */}
+        />
 
         {loaderVisible === true ? (
           <View
