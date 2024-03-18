@@ -272,6 +272,9 @@ export const SignIn = () => {
             textContentType={"emailAddress"}
             value={emailAddress}
             autoCapitalize="none"
+            onSubmitEditing={() => {
+              validation(emailAddress);
+            }}
           />
           <TouchableOpacity
             style={styles.signUpButton}
@@ -288,18 +291,19 @@ export const SignIn = () => {
             {/* <View
               style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
             /> */}
-            <Text allowFontScaling={false} style={styles.ortext}>OR</Text>
+            <Text allowFontScaling={false} style={styles.ortext}>
+              OR
+            </Text>
             {/* <View
               style={{ height: 1, width: 130, backgroundColor: "#C2C4C8" }}
             /> */}
           </View>
 
-          <TouchableOpacity
-            style={styles.googleStyle}
-            onPress={_googleSignIn}
-          >
+          <TouchableOpacity style={styles.googleStyle} onPress={_googleSignIn}>
             <Google />
-            <Text allowFontScaling={false} style={styles.googleText}>Sign in with Google</Text>
+            <Text allowFontScaling={false} style={styles.googleText}>
+              Sign in with Google
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -307,9 +311,10 @@ export const SignIn = () => {
             onPress={() => onAppleButtonPress()}
           >
             <Apple />
-            <Text allowFontScaling={false} style={styles.googleText}>Sign in with Apple</Text>
+            <Text allowFontScaling={false} style={styles.googleText}>
+              Sign in with Apple
+            </Text>
           </TouchableOpacity>
-
         </View>
       </View>
     </SafeAreaView>
