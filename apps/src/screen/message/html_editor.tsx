@@ -56,6 +56,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { chatStoreActions, sendTypingEvent, uploadFiles } from "../../../store";
 import { get } from "lodash";
+import { TaggingModal } from "./taggingModel";
 const ActionList = [
   actions.setBold,
   actions.setItalic,
@@ -73,6 +74,7 @@ const ActionList = [
   // actions.checkboxList,
   // actions.keyboard,
 ];
+
 export const HtmlEditorView = (props) => {
   const {
     isAudio,
@@ -94,13 +96,17 @@ export const HtmlEditorView = (props) => {
     setSelectedUrl,
     setDocResult,
     ChannelInfo,
-    setTaggingModal,
+    // setTaggingModal,
     changedData,
     setChangedData,
     fromThread,
+    mention,
+    setMention,
+    memberData,
   } = props;
 
   const richText = useRef<any>();
+  const scrollViewRef = useRef<any>();
   const dispatch = useDispatch<Dispatch<any>>();
   const [editorAttached, setEditorAttached] = React.useState<boolean>(false);
   const [recording, setRecording] = React.useState<any>();
@@ -108,7 +114,13 @@ export const HtmlEditorView = (props) => {
   const [recordingStart, setRecordingStart] = React.useState<any>();
   const [msg, setMsg] = useState("");
   const [startTagIndex, setStartTagIndex] = useState(-1);
-  const [mention, setMention] = useState([]);
+  // const [changedData, setChangedData] = useState("");
+  const [taggingModal, setTaggingModal] = useState<boolean>(false);
+
+  const handleDataChange = (newData: React.SetStateAction<string>) => {
+    console.log("DIRECT MESSAGE WALA CONSOLE", newData);
+    setChangedData(newData);
+  };
   const regex = /@[a-zA-Z]+(?![\w\s])/;
   // const regex = /@[a-zA-Z]+(?![\w\s])/;
   const { uploadFilesStatus, uploadedFiles, room, typingEvent } = useSelector(
@@ -451,28 +463,30 @@ export const HtmlEditorView = (props) => {
   }
 
   const handleAddString = () => {
-    const stringData = changedData;
+    // const stringData = changedData;
     // richText.current?.insertHTML(stringData);
     // setChangedData('')
-  };
 
-  // console.log("richTextrichText", richText.current)
-  useEffect(() => {
     console.log("RICH TEXT MODIFIER =====>", msg);
     if (changedData !== "") {
       const newMsg = msg.replace(mention[0], changedData);
       console.log("RICH TEXT MODIFIER", changedData);
       console.log("RICH TEXT MODIFIER******", newMsg);
       setMsg(newMsg + "&nbsp;");
-      richText.current?.focusContentEditor();
+      // richText.current?.focusContentEditor();
       setTimeout(() => {
         richText.current?.setContentHTML(newMsg);
         setTextMessage(newMsg);
         setChangedData("");
       }, 250);
-    }
-    // richText.current?.insertHTML("<div></div>")
 
+      setTimeout(() => {
+        richText.current?.focusContentEditor();
+      }, 500);
+    }
+  };
+
+  useEffect(() => {
     handleAddString();
   }, [changedData]);
 
@@ -745,6 +759,15 @@ export const HtmlEditorView = (props) => {
             style={styles.container}
           >
             <View style={{}}>
+              <TaggingModal
+                showModal={taggingModal}
+                setShowModal={setTaggingModal}
+                memberData={memberData}
+                textMessage={textMessage}
+                setTextMessage={setTextMessage}
+                onDataChanged={handleDataChange}
+                mention={mention}
+              />
               <View
                 style={{
                   flexDirection: "row",
@@ -834,6 +857,7 @@ export const HtmlEditorView = (props) => {
               </View>
               <View style={styles.inputMainView}>
                 <ScrollView
+                  ref={scrollViewRef}
                   style={{
                     width: "100%",
                     padding: 5,
@@ -867,8 +891,26 @@ export const HtmlEditorView = (props) => {
                           );
                           const mentions = replacedText.match(regex);
                           console.log("match===>>", mentions, descriptionText);
-
-                          if (mentions !== null) {
+                          const newArray = Object.keys(memberData).map(
+                            (mention) => ({
+                              mention: mention,
+                              name: memberData[mention],
+                            })
+                          );
+                          console.log(
+                            "data====>>>",
+                            newArray,
+                            mention[0]?.split("@")[1]
+                          );
+                          const dataArray = newArray.filter(
+                            (item) =>
+                              item.name
+                                ?.toLowerCase()
+                                .includes(
+                                  mentions[0]?.split("@")[1]?.toLowerCase()
+                                ) && item.name !== "onetabadmin"
+                          );
+                          if (mentions !== null && dataArray.length > 0) {
                             setTaggingModal(true);
                             setTextMessage(descriptionText);
                             // richText.current.setContentHTML(`${descriptionText.replace(mentions[0], changedData)}`)

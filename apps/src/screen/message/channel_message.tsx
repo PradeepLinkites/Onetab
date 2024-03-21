@@ -97,6 +97,7 @@ export const ChannelMessage = (props: any) => {
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const [selectedEmoji, setSelectedEmoji] = useState<any>();
   const [msgSent, setMsgSent] = useState<boolean>(false);
+  const [mention, setMention] = useState([]);
   const [audioFile, setAudioFile] = useState<string>("");
   const [uploadData, setUploadData] = useState<any>([]);
   const [documentState, setDocumentState] = useState<any>();
@@ -1170,6 +1171,8 @@ export const ChannelMessage = (props: any) => {
           setMsgSent={setMsgSent}
           setIsAudio={setIsAudio}
           msgSent={msgSent}
+          mention={mention}
+          setMention={setMention}
           setAudioFile={setAudioFile}
           uploadData={uploadData}
           setUploadData={setUploadData}
@@ -1251,6 +1254,7 @@ export const ChannelMessage = (props: any) => {
           textMessage={textMessage}
           setTextMessage={setTextMessage}
           onDataChanged={handleDataChange}
+          mention={mention}
         />
 
         {loaderVisible === true ? (

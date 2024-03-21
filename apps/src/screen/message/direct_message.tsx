@@ -96,6 +96,7 @@ export const DirectMessage = (props: any) => {
   const [showEmoji, setShowEmoji] = useState<boolean>(false);
   const [selectedEmoji, setSelectedEmoji] = useState<any>();
   const [msgSent, setMsgSent] = useState<boolean>(false);
+  const [mention, setMention] = useState([]);
   const [audioFile, setAudioFile] = useState<string>("");
   const [uploadData, setUploadData] = useState<any>([]);
   const [documentState, setDocumentState] = useState<any>();
@@ -107,7 +108,7 @@ export const DirectMessage = (props: any) => {
   const [event, setEvent] = React.useState<any>();
   const [selectEmojiItem, setSelectEmojiItem] = React.useState<any>();
   const [deleteMessage, setDeleteMessage] = React.useState<boolean>(false);
-  const [taggingModal, setTaggingModal] = useState<boolean>(false);
+  // const [taggingModal, setTaggingModal] = useState<boolean>(false);
 
   const {
     roomStatus,
@@ -663,6 +664,7 @@ export const DirectMessage = (props: any) => {
       textMessage !== ""
     ) {
       console.log("textMessage", textMessage);
+
       async function messagesend() {
         const data = await sendMessage(
           ChannelInfo.matrixRoomId,
@@ -1154,16 +1156,19 @@ export const DirectMessage = (props: any) => {
           setMsgSent={setMsgSent}
           setIsAudio={setIsAudio}
           msgSent={msgSent}
+          mention={mention}
+          setMention={setMention}
           setAudioFile={setAudioFile}
           uploadData={uploadData}
           setUploadData={setUploadData}
           setSelectedUrl={setSelectedUrl}
           setDocResult={setDocResult}
           ChannelInfo={ChannelInfo}
-          setTaggingModal={setTaggingModal}
+          // setTaggingModal={setTaggingModal}
           changedData={changedData}
           setChangedData={setChangedData}
           fromThread={false}
+          memberData={RoomInfo}
         />
 
         <AttachmentModal
@@ -1229,14 +1234,15 @@ export const DirectMessage = (props: any) => {
           }
         />
 
-        <TaggingModal
+        {/* <TaggingModal
           showModal={taggingModal}
           setShowModal={setTaggingModal}
           memberData={RoomInfo}
           textMessage={textMessage}
           setTextMessage={setTextMessage}
           onDataChanged={handleDataChange}
-        />
+          mention={mention}
+        /> */}
 
         {loaderVisible === true ? (
           <View
