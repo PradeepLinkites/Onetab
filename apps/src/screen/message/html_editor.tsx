@@ -121,7 +121,8 @@ export const HtmlEditorView = (props) => {
     console.log("DIRECT MESSAGE WALA CONSOLE", newData);
     setChangedData(newData);
   };
-  const regex = /@[a-zA-Z]+(?![\w\s])/;
+  // const regex=/(?<!\b">|")@(\w+)/
+  const regex = /(?<!["|<|">])@(\w+)/;
   // const regex = /@[a-zA-Z]+(?![\w\s])/;
   const { uploadFilesStatus, uploadedFiles, room, typingEvent } = useSelector(
     (state: any) => ({
@@ -461,7 +462,25 @@ export const HtmlEditorView = (props) => {
     setPauseState(false);
     const res = await recording.startAsync();
   }
+  function moveCursorAfterInsertedHTML(insertedHTML) {
+    const input = richText.current;
 
+    if (!input || !insertedHTML) {
+      return;
+    }
+    const text = input.props.initialContentHTML;
+    console.log("====free", text, insertedHTML);
+    const index = text.indexOf(insertedHTML);
+
+    if (index !== -1) {
+      const range = document.createRange();
+      const sel = window.getSelection();
+      range.setStart(input.firstChild, index + insertedHTML.length);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  }
   const handleAddString = () => {
     // const stringData = changedData;
     // richText.current?.insertHTML(stringData);
@@ -469,14 +488,19 @@ export const HtmlEditorView = (props) => {
 
     console.log("RICH TEXT MODIFIER =====>", msg);
     if (changedData !== "") {
-      const newMsg = msg.replace(mention[0], changedData);
+      const newMsg = msg.replace(regex, changedData);
+      // const newMsg = msg.replace(mention[0], changedData);
       console.log("RICH TEXT MODIFIER", changedData);
       console.log("RICH TEXT MODIFIER******", newMsg);
-      setMsg(newMsg + "&nbsp;");
+      setMsg(newMsg);
       // richText.current?.focusContentEditor();
       setTimeout(() => {
-        richText.current?.setContentHTML(newMsg);
+        richText.current?.setContentHTML("");
+        richText.current?.insertHTML(newMsg);
+        // richText.current?.setContentHTML(newMsg);
+
         setTextMessage(newMsg);
+        // richText.current.commandDOM(moveCursorAfterInsertedHTML(changedData))
         setChangedData("");
       }, 250);
 
@@ -920,6 +944,7 @@ export const HtmlEditorView = (props) => {
                           } else {
                             // console.log("changed way");
                             setTaggingModal(false);
+                            setMention([]);
                           }
 
                           dispatch(
