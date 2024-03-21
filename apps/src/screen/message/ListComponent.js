@@ -34,11 +34,11 @@ const ListComponent = (props) => {
     setShowModal,
     setEvent,
     setSelectEmojiItem,
-    setShowEmoji
+    setShowEmoji,
   } = props;
 
   const item = items;
-
+  console.log("}}}}}}", item);
   // useEffect(() => {
   //   if (currentItem !== undefined) {
   //     console.log("Cuurrent iteem  ==> ");
@@ -105,11 +105,15 @@ const ListComponent = (props) => {
       <View style={styles.topView}>
         {item.alreadySend === false ? (
           <View style={styles.bodyView}>
-            <Pressable onPress={()=>{
-              navigation.navigate(RootRoutes.User_Profile,{
-              userName:item.userName,
-              userImage: item.userImage,
-            })}} style={styles.chatImageMainView}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate(RootRoutes.User_Profile, {
+                  userName: item.userName,
+                  userImage: item.userImage,
+                });
+              }}
+              style={styles.chatImageMainView}
+            >
               {item.userImage === "" ? (
                 <View
                   style={{
@@ -118,7 +122,7 @@ const ListComponent = (props) => {
                     backgroundColor: "#3866E6",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderRadius:5
+                    borderRadius: 5,
                   }}
                 >
                   {item.userName !== undefined && (
@@ -140,7 +144,11 @@ const ListComponent = (props) => {
                 >
                   <Image
                     style={styles.msgUserPic}
-                    source={item.userImage!==''?{ uri: item.userImage }:require("../../assets/images/app_logo.png")}
+                    source={
+                      item.userImage !== ""
+                        ? { uri: item.userImage }
+                        : require("../../assets/images/app_logo.png")
+                    }
                     defaultSource={require("../../assets/images/app_logo.png")}
                     resizeMode="contain"
                   />
@@ -183,6 +191,10 @@ const ListComponent = (props) => {
                         setCurrentItem={setCurrentItem}
                         setShowOptionModal={setShowModal}
                         setEvent={setEvent}
+                        userData={{
+                          userName: item.userName,
+                          userImage: item.userImage,
+                        }}
                       />
                     ),
                     image: (
@@ -621,10 +633,12 @@ const ListComponent = (props) => {
                     );
                   })}
 
-                  <TouchableOpacity onPress={() => {
-                     setEvent(item)
-                     setShowEmoji(true)
-                  }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setEvent(item);
+                      setShowEmoji(true);
+                    }}
+                  >
                     <View style={styles.addEmojiContainerView}>
                       <AddEmoji />
                     </View>
@@ -926,7 +940,7 @@ const ListComponent = (props) => {
                   ),
                   document:
                     item.document !== undefined &&
-                    item.document[0].type.includes("image")  ? (
+                    item.document[0].type.includes("image") ? (
                       item.document !== undefined &&
                       item.document[0].type.split("/")[0] !== "video" ? (
                         <TouchableOpacity
@@ -1160,10 +1174,12 @@ const ListComponent = (props) => {
                   );
                 })}
 
-                <TouchableOpacity onPress={() => {
-                  setEvent(item)
-                  setShowEmoji(true)
-                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setEvent(item);
+                    setShowEmoji(true);
+                  }}
+                >
                   <View style={styles.addEmojiContainerView}>
                     <AddEmoji />
                   </View>

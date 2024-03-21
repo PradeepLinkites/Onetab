@@ -27,7 +27,13 @@ export const TaggingModal = ({
       <Text
         style={styles.userItem}
         onPress={() => {
-          onDataChanged(item.name);
+          console.log(
+            "[[[[[[[[[[[[[[: ",
+            item,
+            `<a class=mention_click id=${item.mention} href=_blank target=_blank>@${item.name}</a>`
+          );
+          const tagUser = `<a class=mention_click id=${item.mention} href=${item.mention} target=_blank>@${item.name}</a>`;
+          onDataChanged(tagUser);
           setShowModal(false);
         }}
       >

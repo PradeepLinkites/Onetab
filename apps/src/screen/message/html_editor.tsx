@@ -96,6 +96,7 @@ export const HtmlEditorView = (props) => {
     ChannelInfo,
     setTaggingModal,
     changedData,
+    setChangedData,
     fromThread,
   } = props;
 
@@ -105,7 +106,11 @@ export const HtmlEditorView = (props) => {
   const [recording, setRecording] = React.useState<any>();
   const [pauseState, setPauseState] = React.useState<any>(false);
   const [recordingStart, setRecordingStart] = React.useState<any>();
+  const [msg, setMsg] = useState("");
+  const [startTagIndex, setStartTagIndex] = useState(-1);
+  const [mention, setMention] = useState([]);
   const regex = /@[a-zA-Z]+(?![\w\s])/;
+  // const regex = /@[a-zA-Z]+(?![\w\s])/;
   const { uploadFilesStatus, uploadedFiles, room, typingEvent } = useSelector(
     (state: any) => ({
       uploadFilesStatus: state.chatStore.uploadFilesStatus,
@@ -115,7 +120,9 @@ export const HtmlEditorView = (props) => {
     })
   );
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("$$$$$$$$$$: ", msg);
+  }, [msg]);
 
   const getTypingStatus = () => {
     const typeStatus: any = [];
@@ -445,12 +452,27 @@ export const HtmlEditorView = (props) => {
 
   const handleAddString = () => {
     const stringData = changedData;
-    richText.current?.insertHTML(stringData);
+    // richText.current?.insertHTML(stringData);
+    // setChangedData('')
   };
 
   // console.log("richTextrichText", richText.current)
   useEffect(() => {
-    console.log("RICH TEXT MODIFIER");
+    console.log("RICH TEXT MODIFIER =====>", msg);
+    if (changedData !== "") {
+      const newMsg = msg.replace(mention[0], changedData);
+      console.log("RICH TEXT MODIFIER", changedData);
+      console.log("RICH TEXT MODIFIER******", newMsg);
+      setMsg(newMsg + "&nbsp;");
+      richText.current?.focusContentEditor();
+      setTimeout(() => {
+        richText.current?.setContentHTML(newMsg);
+        setTextMessage(newMsg);
+        setChangedData("");
+      }, 250);
+    }
+    // richText.current?.insertHTML("<div></div>")
+
     handleAddString();
   }, [changedData]);
 
@@ -837,15 +859,21 @@ export const HtmlEditorView = (props) => {
                         ) {
                           setSendShowButton(true);
                           setTextMessage(descriptionText);
+                          // setFormattedMsg(descriptionText);
+                          setMsg(descriptionText);
                           const replacedText = descriptionText.replace(
                             /&nbsp;/g,
                             " "
                           );
                           const mentions = replacedText.match(regex);
                           console.log("match===>>", mentions, descriptionText);
+
                           if (mentions !== null) {
                             setTaggingModal(true);
                             setTextMessage(descriptionText);
+                            // richText.current.setContentHTML(`${descriptionText.replace(mentions[0], changedData)}`)
+                            setMention(mentions);
+                            // richText.current.setContentHTML(textMessage)
                             // console.log("descriptionText", textMessage);
                           } else {
                             // console.log("changed way");

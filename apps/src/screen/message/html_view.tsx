@@ -43,9 +43,10 @@ export const HtmlView = (props) => {
     updateItem,
     setShowOptionModal,
     setEvent,
+    userData
   } = props;
 
-  //console.log("Html type ==> ", htmlType, htmltext);
+  console.log("Html type ==> ", userData);
   const [onMessageTriggre, setOnMessageTrigger] = useState<any>(undefined);
 
   const [{ widthStyle, heightStyle }, setStyle] = useState({
@@ -122,6 +123,8 @@ export const HtmlView = (props) => {
     if (href === "about:///blank") {
       alert(htmlAttribs.id);
     } else {
+      const link= href.split('about:///')[1]
+      console.log('=====>>>>>>', href, link)
       Linking.openURL(href).catch((error) =>
         console.error("An error occurred", error)
       );

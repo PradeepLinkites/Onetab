@@ -1000,7 +1000,7 @@ export const DirectMessage = (props: any) => {
   };
 
   const [changedData, setChangedData] = useState("");
-  const handleDataChange = (newData) => {
+  const handleDataChange = (newData: React.SetStateAction<string>) => {
     console.log("DIRECT MESSAGE WALA CONSOLE", newData);
     setChangedData(newData);
   };
@@ -1162,6 +1162,7 @@ export const DirectMessage = (props: any) => {
           ChannelInfo={ChannelInfo}
           setTaggingModal={setTaggingModal}
           changedData={changedData}
+          setChangedData={setChangedData}
           fromThread={false}
         />
 

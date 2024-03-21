@@ -17,6 +17,7 @@ import { Divider } from "../../components";
 import { Lock, Recent } from "../../assets";
 export const UserProfile = (props: any) => {
   const { userName, userImage } = props?.route?.params;
+  console.log('<<<<<<<',userImage)
   console.log("UserProfile", userName, userImage);
   const navigation = useNavigation();
   const [firstName, setFirstName] = useState<string>();
@@ -45,7 +46,7 @@ export const UserProfile = (props: any) => {
 
       <Image
         source={
-          userImage === " "
+          userImage !== ""
             ? { uri: userImage }
             : require("../../assets/images/app_logo.png")
         }
