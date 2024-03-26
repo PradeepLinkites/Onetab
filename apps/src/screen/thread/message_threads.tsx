@@ -73,10 +73,11 @@ interface MessageDataType {
   emoji: any;
   document: any;
   music: any;
+  roomId: any;
 }
 export const MessageThreads = (props) => {
   const MessageInfo: MessageDataType = JSON.parse(props.route.params.item);
-  //console.log("Message Thread Info ==> ",messageInfo)
+  console.log("Message Thread Info ==> ", MessageInfo);
   const dispatch = useDispatch<Dispatch<any>>();
   const [messageInfo, setMessageInfo] = useState<any>(MessageInfo);
   const keyboardHeight = useKeyboard();
@@ -103,6 +104,8 @@ export const MessageThreads = (props) => {
   const [selectPreviewContact, setSelectedPreviewContact] =
     useState<any>(undefined);
   const [changedData, setChangedData] = useState("");
+  const [channelMemberData, setChannelMemberData] = useState({});
+  const [mention, setMention] = useState([]);
 
   const [docResult, setDocResult] = React.useState<
     | Array<DocumentPickerResponse>
@@ -134,7 +137,6 @@ export const MessageThreads = (props) => {
   const [roomMembers, setRoomMembers] = React.useState<any>();
   const [event, setEvent] = React.useState<any>();
   const [isBottomScroll, setIsBottomScroll] = React.useState<boolean>(false);
-
   const {
     roomStatus,
     loadMoreStatus,
@@ -155,6 +157,12 @@ export const MessageThreads = (props) => {
     channelData: state.chatStore.channelData,
   }));
 
+  console.log(
+    "^^^^^^^^^^^^^^: ",
+    channelData.data.data.channels[0].matrixRoomId
+  );
+  // console.log("^^^^^^^^^^^^^^: ", channelData.data.data.channels)
+
   function isEmpty(obj: any) {
     for (var prop in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, prop)) {
@@ -172,6 +180,10 @@ export const MessageThreads = (props) => {
     } else {
       console.log("Calling 2");
       setRoomMembers(get(room, "currentState", "")["members"]);
+      console.log(
+        "&&&&&&&&&&&&&&&&&&: ",
+        get(room, "currentState", "")["members"]
+      );
     }
   }, [room]);
 
@@ -1596,6 +1608,13 @@ export const MessageThreads = (props) => {
           fromThread={true}
           changedData={changedData}
           setChangedData={setChangedData}
+          mention={mention}
+          setMention={setMention}
+          memberData={
+            channelData.data.data.channels.filter(
+              (item: any) => item.matrixRoomId === MessageInfo?.roomId
+            )[0].matrixRoomInfo.membersInfo
+          }
         />
 
         <AttachmentModal
