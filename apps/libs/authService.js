@@ -7,7 +7,7 @@ import {
 } from "@apollo/client";
 
 const authClient = new ApolloClient({
-  uri: "https://auth.onetab.ai/api/graphql",
+  uri: "https://stg-auth.onetab.ai/api/graphql",
   cache: new InMemoryCache(),
 });
 

@@ -7,7 +7,7 @@ import {
 } from "@apollo/client";
 import authMiddleware from "./middleware/authMiddleware";
 
-const httpLink = new HttpLink({ uri: "https://connect.onetab.ai/api/graphql" });
+const httpLink = new HttpLink({ uri: "https://stg-connect.onetab.ai/api/graphql" });
 
 const chatClient = new ApolloClient({
   cache: new InMemoryCache(),
