@@ -17,7 +17,7 @@ export const TaggingModal = ({
     mention: mention,
     name: memberData[mention],
   }));
-  console.log("data====>>>", newArray, mention[0]?.split("@")[1]);
+  // console.log("data====>>>", newArray, mention[0]?.split("@")[1]);
   const dataArray = newArray.filter(
     (item) =>
       item.name

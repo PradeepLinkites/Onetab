@@ -663,8 +663,41 @@ export const DirectMessage = (props: any) => {
       textMessage !== undefined &&
       textMessage !== ""
     ) {
-      console.log("textMessage", textMessage);
+      // let finalMessage = textMessage;
+      // const mentionRegex =
+      //   /<a\s+(?:[^>]*?\s+)?href="([^"]*)"[^>]*>(.*?)<\/a>/gi;
+      // console.log("textMessage ---------> ", RoomInfo);
+      // const matchedMentions = textMessage.match(mentionRegex);
+      // console.log("$$$$$$$$$$$$$: ", matchedMentions);
+      // const achorTextRegex = /<a(?:[^>]*?)>(.*?)<\/a>/gi;
+      // const achorIdRegex = /<a[^>]*?\sid="(.*?)"(?:[^>]*?)>(?:.*?)<\/a>/gi;
+      // for (let i = 0; i < matchedMentions.length; i++) {
+      //   let matchName;
+      //   let matchId;
+      //   let achorMatchId, anchorMatchName;
+      //   while ((matchId = achorIdRegex.exec(matchedMentions[i])) !== null) {
+      //     const id = matchId[1];
+      //     console.log("-=-==-=-==-=- ", id);
+      //     achorMatchId = id.toString();
+      //   }
+      //   while ((matchName = achorTextRegex.exec(matchedMentions[i])) !== null) {
+      //     const anchorText = matchName[1];
+      //     console.log("%%%%%%%%%%: ", anchorText);
+      //     anchorMatchName = anchorText;
+      //   }
 
+      //   const usernameFromRoomInfo = RoomInfo[achorMatchId];
+      //   console.log(")))))))))", usernameFromRoomInfo, anchorMatchName);
+
+      //   if (usernameFromRoomInfo !== anchorMatchName.replace("@", "")) {
+      //     console.log("!!!!!!!!!!! unmatched data found", anchorMatchName);
+      //     finalMessage = finalMessage.replace(
+      //       matchedMentions[i],
+      //       anchorMatchName
+      //     );
+      //   }
+      // }
+      // console.log("*********", finalMessage);
       async function messagesend() {
         const data = await sendMessage(
           ChannelInfo.matrixRoomId,

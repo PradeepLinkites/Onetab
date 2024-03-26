@@ -122,7 +122,10 @@ export const HtmlEditorView = (props) => {
     setChangedData(newData);
   };
   // const regex=/(?<!\b">|")@(\w+)/
-  const regex = /(?<!["|<|">])@(\w+)/;
+  // const regex = /(?<!["|<|">])@(\w+)/;
+  // const regex = /(?<=)@[\w-]+/g
+
+  const tagRegex = /(?=(?<!["|<])@[a-zA-Z]*)((?<!">)@[a-zA-Z]*)/;
   // const regex = /@[a-zA-Z]+(?![\w\s])/;
   const { uploadFilesStatus, uploadedFiles, room, typingEvent } = useSelector(
     (state: any) => ({
@@ -488,7 +491,7 @@ export const HtmlEditorView = (props) => {
 
     console.log("RICH TEXT MODIFIER =====>", msg);
     if (changedData !== "") {
-      const newMsg = msg.replace(regex, changedData);
+      const newMsg = msg.replace(tagRegex, changedData);
       // const newMsg = msg.replace(mention[0], changedData);
       console.log("RICH TEXT MODIFIER", changedData);
       console.log("RICH TEXT MODIFIER******", newMsg);
@@ -896,6 +899,20 @@ export const HtmlEditorView = (props) => {
                           setEditorAttached(true);
                         });
                       }}
+                      onKeyDown={({ keyCode, key }) => {
+                        // console.log("##### OnKeyDown => ", key, keyCode);
+                        if (key === "Backspace" || key === "Delete") {
+                          console.log("##### OnKeyDown => 123", key, keyCode);
+                          // editor.getSelectedBlocks((selectedBlocks:any) => {
+
+                          //   const cursorPosition = selectedBlocks[0].offset;
+                          //   console.log(
+                          //     "Cursor position after backspace:",
+                          //     cursorPosition
+                          //   );
+                          // });
+                        }
+                      }}
                       onChange={(descriptionText) => {
                         // var cleanText = descriptionText.replace(/<\/?[^>]+(>|$)/g, "");
                         // cleanText = cleanText.replace(/&nbsp;/g, '');
@@ -913,7 +930,7 @@ export const HtmlEditorView = (props) => {
                             /&nbsp;/g,
                             " "
                           );
-                          const mentions = replacedText.match(regex);
+                          const mentions = replacedText.match(tagRegex);
                           console.log("match===>>", mentions, descriptionText);
                           const newArray = Object.keys(memberData).map(
                             (mention) => ({
@@ -999,8 +1016,64 @@ export const HtmlEditorView = (props) => {
                   <TouchableOpacity
                     style={styles.sendButtonView}
                     onPress={() => {
-                      setMsgSent(!msgSent);
-                      richText.current?.setContentHTML("");
+                      let finalMessage = textMessage;
+                      const mentionRegex =
+                        /<a\s+(?:[^>]*?\s+)?href="([^"]*)"[^>]*>(.*?)<\/a>/gi;
+                      console.log("textMessage ---------> ", memberData);
+                      const matchedMentions = textMessage.match(mentionRegex);
+                      console.log("$$$$$$$$$$$$$: ", matchedMentions);
+                      const achorTextRegex = /<a(?:[^>]*?)>(.*?)<\/a>/gi;
+                      const achorIdRegex =
+                        /<a[^>]*?\sid="(.*?)"(?:[^>]*?)>(?:.*?)<\/a>/gi;
+                      for (let i = 0; i < matchedMentions.length; i++) {
+                        let matchName;
+                        let matchId;
+                        let achorMatchId, anchorMatchName;
+                        while (
+                          (matchId = achorIdRegex.exec(matchedMentions[i])) !==
+                          null
+                        ) {
+                          const id = matchId[1];
+                          console.log("-=-==-=-==-=- ", id);
+                          achorMatchId = id.toString();
+                        }
+                        while (
+                          (matchName = achorTextRegex.exec(
+                            matchedMentions[i]
+                          )) !== null
+                        ) {
+                          const anchorText = matchName[1];
+                          console.log("%%%%%%%%%%: ", anchorText);
+                          anchorMatchName = anchorText;
+                        }
+
+                        const usernameFromRoomInfo = memberData[achorMatchId];
+                        console.log(
+                          ")))))))))",
+                          usernameFromRoomInfo,
+                          anchorMatchName
+                        );
+
+                        if (
+                          usernameFromRoomInfo !==
+                          anchorMatchName.replace("@", "")
+                        ) {
+                          console.log(
+                            "!!!!!!!!!!! unmatched data found",
+                            anchorMatchName
+                          );
+                          finalMessage = finalMessage.replace(
+                            matchedMentions[i],
+                            anchorMatchName
+                          );
+                        }
+                      }
+                      console.log("*********", finalMessage);
+                      setTextMessage(finalMessage);
+                      setTimeout(() => {
+                        setMsgSent(!msgSent);
+                        richText.current?.setContentHTML("");
+                      }, 250);
                     }}
                   >
                     <View style={styles.sendButton}>
