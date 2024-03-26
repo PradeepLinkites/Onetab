@@ -1179,9 +1179,11 @@ export const ChannelMessage = (props: any) => {
           setSelectedUrl={setSelectedUrl}
           setDocResult={setDocResult}
           ChannelInfo={ChannelInfo}
-          setTaggingModal={setTaggingModal}
+          // setTaggingModal={setTaggingModal}
           changedData={changedData}
+          setChangedData={setChangedData}
           fromThread={false}
+          memberData={RoomInfo}
         />
 
         <AttachmentModal

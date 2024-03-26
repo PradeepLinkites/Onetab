@@ -102,6 +102,7 @@ export const MessageThreads = (props) => {
   const [selectPreviewType, setSelectPreviewType] = useState<string>("");
   const [selectPreviewContact, setSelectedPreviewContact] =
     useState<any>(undefined);
+  const [changedData, setChangedData] = useState("");
 
   const [docResult, setDocResult] = React.useState<
     | Array<DocumentPickerResponse>
@@ -1296,7 +1297,7 @@ export const MessageThreads = (props) => {
                           }
                         >
                           {audioPlaying ? (
-                            <Ionicons name="ios-pause" size={24} color="red" />
+                            <Ionicons name="pause" size={24} color="red" />
                           ) : (
                             <Ionicons name="play" size={24} color="green" />
                           )}
@@ -1593,6 +1594,8 @@ export const MessageThreads = (props) => {
           msgSent={msgSent}
           setAudioFile={setAudioFile}
           fromThread={true}
+          changedData={changedData}
+          setChangedData={setChangedData}
         />
 
         <AttachmentModal
