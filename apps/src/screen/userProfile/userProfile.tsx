@@ -15,9 +15,10 @@ import { Ionicons, Foundation } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Divider } from "../../components";
 import { Lock, Recent } from "../../assets";
+import moment from 'moment-timezone';
 export const UserProfile = (props: any) => {
-  const { userName, userImage } = props?.route?.params;
-  console.log('<<<<<<<',userImage)
+  const { userName, userImage, isActive, timeZone } = props?.route?.params;
+  // console.log('<<<<<<<',userImage)
   console.log("UserProfile", userName, userImage);
   const navigation = useNavigation();
   const [firstName, setFirstName] = useState<string>();
@@ -65,12 +66,12 @@ export const UserProfile = (props: any) => {
 
         <View style={styles.statusContainer}>
           <View style={styles.status} />
-          <Text style={styles.statusText}>Active</Text>
+          <Text style={styles.statusText}>{isActive ? 'Active' : 'Inactive'}</Text>
         </View>
 
         <View style={styles.statusContainer}>
           <Recent style={styles.clock} />
-          <Text style={styles.statusText}>12:36 PM local time</Text>
+          <Text style={styles.statusText}>{`${moment.tz(moment(), timeZone).format('DD/MM/YYYY HH:mm')} local time`}</Text>
         </View>
 
         <TouchableOpacity style={styles.messageButton} onPress={() => {}}>

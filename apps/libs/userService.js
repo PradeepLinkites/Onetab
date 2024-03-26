@@ -1060,6 +1060,10 @@ const getTimeZone = gql`
 const GetUserTimeZoneByMatrixRoomId = gql`
 query getUserByMatrixUsername($matrixRoomId: String!) {
   getUserByMatrixUsername(matrixRoomId: $matrixRoomId) {
+    profileImageUrl
+    firstName
+    lastName
+    is_active
     timezone
   }
 }`;

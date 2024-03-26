@@ -382,6 +382,24 @@ export function getUserColor(matrixId: any, usersColor: any) {
   return color ? "#" + color.color : "#3866E6";
 }
 
+export const fetchUserDetailsByMatrixId = createAsyncThunk(
+  "user/Data",
+  async (userMatrixId: string, thunkAPI) => {
+    const { userClient, userQuery } = userService;
+    try {
+      const data = await userClient.query({
+        query: userQuery.GetUserTimeZoneByMatrixRoomId,
+        variables: { matrixRoomId: userMatrixId },
+      });
+      console.log("userQuery.fetchUserDetailsByMatrixId", data);
+      return data;
+    } catch (error) {
+      console.log("userQuery.fetchUserDetailsByMatrixId", error);
+      return undefined;
+    }
+  }
+);
+
 export const initialUserStoreState = userStoreAdapter.getInitialState({
   loadingStatus: "not loaded",
   error: null || "",
@@ -423,6 +441,7 @@ export const initialUserStoreState = userStoreAdapter.getInitialState({
   uploadProfilePicData: {},
   uploadProfilePicStatus: "not loaded",
   userListData: [],
+  userDataUsingMatrixId: {},
 });
 export const userStoreSlice = createSlice({
   name: USER_FEATURE_KEY,
@@ -447,6 +466,9 @@ export const userStoreSlice = createSlice({
     },
     setCreateInvitesStatus: (state, action) => {
       state.createInvitesStatus = action.payload;
+    },
+    setUserDataUsingMatrixId: (state, action) => {
+      state.userDataUsingMatrixId = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -656,6 +678,17 @@ export const userStoreSlice = createSlice({
       })
       .addCase(uploadProfilePic.rejected, (state, action) => {
         state.uploadProfilePicStatus = "error";
+        state.error = action.error.message ?? "";
+      })
+      .addCase(fetchUserDetailsByMatrixId.pending, (state) => {
+        // state.uploadProfilePicStatus = "loading";
+      })
+      .addCase(fetchUserDetailsByMatrixId.fulfilled, (state, action) => {
+        state.userDataUsingMatrixId = action.payload ?? {};
+        // state.uploadProfilePicStatus = "loaded";
+      })
+      .addCase(fetchUserDetailsByMatrixId.rejected, (state, action) => {
+        // state.uploadProfilePicStatus = "error";
         state.error = action.error.message ?? "";
       });
   },

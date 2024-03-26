@@ -13,6 +13,9 @@ import { AutoHeightWebView } from "../../components";
 import { RootRoutes } from "../../navigation/routes";
 
 import RenderHtml from "react-native-render-html";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { fetchUserDetailsByMatrixId, userStoreActions } from "../../../store";
 
 export const onError = ({ nativeEvent }) =>
   console.error("WebView error: ", nativeEvent);
@@ -43,10 +46,43 @@ export const HtmlView = (props) => {
     updateItem,
     setShowOptionModal,
     setEvent,
-    userData
+    userData,
   } = props;
 
   console.log("Html type ==> ", userData);
+  const dispatch = useDispatch<Dispatch<any>>();
+  const { userDataUsingMatrixId } = useSelector((state: any) => ({
+    userDataUsingMatrixId: state.userStore.userDataUsingMatrixId,
+  }));
+
+  useEffect(() => {
+    if (
+      userDataUsingMatrixId &&
+      userDataUsingMatrixId.data &&
+      userDataUsingMatrixId.data.getUserByMatrixUsername &&
+      userDataUsingMatrixId.data.getUserByMatrixUsername
+    ) {
+      console.log(
+        "=-=-=-=-=-=-=-=-",
+        userDataUsingMatrixId.data.getUserByMatrixUsername
+      );
+      const username = `${userDataUsingMatrixId.data.getUserByMatrixUsername.firstName} ${userDataUsingMatrixId.data.getUserByMatrixUsername.lastName}`;
+      const userProfileImageUrl =
+        userDataUsingMatrixId.data.getUserByMatrixUsername.profileImageUrl;
+
+      navigation.navigate(RootRoutes.User_Profile, {
+        userName: username,
+        userImage: userProfileImageUrl,
+        isActive: userDataUsingMatrixId.data.getUserByMatrixUsername.is_active,
+        timeZone: userDataUsingMatrixId.data.getUserByMatrixUsername.timezone,
+      });
+      setTimeout(() => {
+        if (!!userDataUsingMatrixId)
+          dispatch(userStoreActions.setUserDataUsingMatrixId({}));
+      }, 2400);
+    }
+  }, [userDataUsingMatrixId]);
+
   const [onMessageTriggre, setOnMessageTrigger] = useState<any>(undefined);
 
   const [{ widthStyle, heightStyle }, setStyle] = useState({
@@ -119,16 +155,32 @@ export const HtmlView = (props) => {
     }
   };
 
-  function onPress(event, href, htmlAttribs) {
-    if (href === "about:///blank") {
-      alert(htmlAttribs.id);
-    } else {
-      const link= href.split('about:///')[1]
-      console.log('=====>>>>>>', href, link)
-      Linking.openURL(href).catch((error) =>
-        console.error("An error occurred", error)
-      );
+  const fetchUserDetails = async (matrixUserId: string) => {
+    try {
+      dispatch(fetchUserDetailsByMatrixId(matrixUserId));
+    } catch (error) {
+      console.log("Error in fetching user details");
     }
+  };
+
+  function onPress(event, href, htmlAttribs) {
+    const matrixUserId = href.replace("about:///@", "").split(":")[0];
+    fetchUserDetails(matrixUserId);
+    // alert((href =  about:///@amit_mjpck1ap-stg:matrix.onetab.ai))
+    // alert(JSON.stringify(htmlAttribs))
+    // navigation.navigate(RootRoutes.User_Profile, {
+    //   userName: userData.userName,
+    //   userImage: userData.userImage,
+    // });
+    // if (href === "about:///blank") {
+    //   alert(htmlAttribs.id);
+    // } else {
+    //   const link= href.split('about:///')[1]
+    //   console.log('=====>>>>>>', href, link)
+    //   Linking.openURL(href).catch((error) =>
+    //     console.error("An error occurred", error)
+    //   );
+    // }
   }
 
   return (
