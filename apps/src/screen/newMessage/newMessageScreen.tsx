@@ -90,9 +90,6 @@ export const NewMessageScreen = ({
             is_direct: true,
             visibility: true,
             invite: [user],
-            preset: "trusted_private_chat",
-            topic: "",
-            otherUserName: name,
           })
         );
       }

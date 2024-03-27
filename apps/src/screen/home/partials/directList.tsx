@@ -56,6 +56,7 @@ export const DirectList = (props: DirectListPropType) => {
       </Pressable>
       <Animated.View style={animatedDMlistStyle}>
         {directMessageList.map((item: any, index: any) => {
+          // console.log("###############: ", index, item.matrixRoomInfo.membersInfo)
           return (
             <Pressable
               key={item.name + index}

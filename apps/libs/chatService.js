@@ -7,10 +7,14 @@ import {
 } from "@apollo/client";
 import authMiddleware from "./middleware/authMiddleware";
 
-const httpLink = new HttpLink({ uri: "https://stg-connect.onetab.ai/api/graphql" });
+const httpLink = new HttpLink({
+  uri: "https://stg-connect.onetab.ai/api/graphql",
+});
 
 const chatClient = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    addTypename: false,
+  }),
   link: concat(authMiddleware, httpLink),
 });
 
@@ -248,6 +252,12 @@ const updateChannel = gql`
   }
 `;
 
+const getSlackMessagesByChannel = gql`
+  query getSlackMessagesByChannel($channelId: String!) {
+    getSlackMessagesByChannel(channelId: $channelId)
+  }
+`;
+
 const getChannel = gql`
   query getChannel($workspace_id: String!, $roomId: String!) {
     channel(workspace_id: $workspace_id, roomId: $roomId) {
@@ -426,6 +436,41 @@ const createChatPreference = gql`
   mutation createChatPreference($chatPreferenceInput: InputPreference!) {
     createChatPreference(chatPreferenceInput: $chatPreferenceInput) {
       _id
+      notification {
+        event
+        allowedDays
+        durations {
+          day
+          startTime {
+            hour
+            minute
+          }
+          endTime {
+            hour
+            minute
+          }
+        }
+      }
+      connectedApps
+      notifyApi {
+        isEnable
+        channels
+      }
+      notifyKanban {
+        isEnable
+        channels
+      }
+    }
+  }
+`;
+
+const fetchPreferences = gql`
+  query fetchPreferences {
+    fetchPreferences {
+      _id
+      workspace {
+        _id
+      }
       notification {
         event
         allowedDays
@@ -755,8 +800,18 @@ const createUsersActivitiesLog = gql`
 `;
 
 const oneAskQuery = gql`
-  mutation oneAskQuery($directoryId: String!, $userInput: String!) {
-    oneAskQuery(directoryId: $directoryId, userInput: $userInput) {
+  mutation oneAskQuery(
+    $directoryId: String!
+    $userInput: String!
+    $organization: String!
+    $userName: String!
+  ) {
+    oneAskQuery(
+      directoryId: $directoryId
+      userInput: $userInput
+      organization: $organization
+      userName: $userName
+    ) {
       success
       data
     }
@@ -796,5 +851,7 @@ export const chatService = {
     getApps,
     createUsersActivitiesLog,
     oneAskQuery,
+    getSlackMessagesByChannel,
+    fetchPreferences,
   },
 };

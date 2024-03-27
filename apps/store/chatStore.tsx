@@ -101,7 +101,7 @@ async function openRoomThread(
   const sender = client.getUser(senderId);
   if (get(event, "event_id")) {
     const matrixEvent = new MatrixEvent(event);
-    matrixEivent.sender = sender;
+    matrixEvent.sender = sender;
     thunkAPI.dispatch(chatStoreActions.setToogleThreadModal(matrixEvent));
   }
 }
@@ -303,12 +303,21 @@ var token = "";
 
 async function getRoomsEvent(thunkAPI: any) {
   client.on(ClientEvent.Event, async function (event: any) {
-    // console.log("My Event ==> ", event);
     //console.log("age ",get(event, "event.unsigned.age", 0))
     const room = get(thunkAPI.getState(), "chatStore.room", "");
     const rooms = get(thunkAPI.getState(), "chatStore.rooms", "");
     const threadModal = get(thunkAPI.getState(), "chatStore.threadModal", "");
     thunkAPI.dispatch(chatStoreActions.setForceUpdate(null));
+    // console.log(
+    //   "My Event ==> ",
+    //   event,
+    //   "\nevent.type",
+    //   event.getType(),
+    //   "\nObject.keys(room).length",
+    //   Object.keys(room).length,
+    //   "\nroom.roomID === get(event.event.room_id)",
+    //   room.roomID === get(event.event.room_id, "")
+    // );
     //if (get(event, "event.unsigned.age", 0) < 1000) {
     if (event.getType() === "m.receipt") {
       try {
@@ -378,16 +387,16 @@ async function getRoomsEvent(thunkAPI: any) {
       }
     }
     if (event.getType() == "m.room.member") {
-      // console.log(
-      //   "data: ",
-      //   Object.keys(room),
-      //   "room",
-      //   room,
-      //   "roomID",
-      //   room.roomID,
-      //   "get",
-      //   get(event.event.room_id, "")
-      // );
+      console.log(
+        "data: ",
+        Object.keys(room),
+        "room",
+        room,
+        "roomID",
+        room.roomID,
+        "get",
+        get(event.event.room_id, "")
+      );
       if (
         Object.keys(room).length &&
         room.roomID === get(event.event.room_id, "")
@@ -1103,98 +1112,101 @@ export const createRoom = createAsyncThunk(
   "chat/create/rooms",
   async (roomName: any, thunkAPI: any) => {
     try {
-      let workspace_id = get(
+      const workspace_id = get(
         thunkAPI.getState(),
         "workspaceStore.currentWorkspaceData._id",
         ""
       );
-      console.log("11111", workspace_id);
-      var inviteId = "";
-      if (roomName.is_direct) {
-        if (roomName.invite.length) {
-          inviteId = roomName.invite[0];
-          roomName.invite = ["@" + roomName.invite[0] + ":matrix.onetab.ai"];
-        }
-      }
-
-      var data = await client.createRoom({
-        ...roomName,
-        creation_content: { workspace_id },
-      });
-      console.log("22222", data, get(data, "room_id", ""));
-      console.log("33333", get(thunkAPI.getState(), "userStore.userData", ""));
-      const room_id = get(data, "room_id", "");
-      // thunkAPI.dispatch(getRoom({ roomId: room_id }));
-      if (get(data, "room_id", false)) {
-        const { chatClient, chatQuery } = chatService;
-        get(roomName, "invite", []).map(async (userId: any) => {
-          var result = await chatClient.query({
-            query: chatQuery.inviteUserOnChat,
-            variables: {
-              matrixName: inviteId,
-              roomId: get(data, "room_id", ""),
-              fetchPolicy: "network-only",
-            },
-          });
-        });
-        const membersInfo = {};
-        let myMatrixID = get(thunkAPI.getState(), "userStore.matrixUserId", "");
-
-        let myuser =
-          get(thunkAPI.getState(), "userStore.userData.firstName", "") +
-          " " +
-          get(thunkAPI.getState(), "userStore.userData.lastName", "");
-
-        let otherUserName = roomName.otherUserName;
-        let otherMatrixId = `@${inviteId}:matrix.onetab.ai`;
-        membersInfo[myMatrixID] = myuser;
-        inviteId !== "" ? (membersInfo[otherMatrixId] = otherUserName) : null;
-        {
-          inviteId !== ""
-            ? await thunkAPI.dispatch(
-                onCreateChannel({
-                  name: get(roomName, "name", ""),
-                  description: "",
-                  is_direct: get(roomName, "is_direct", ""),
-                  bookmarks: [],
-                  matrixRoomId: room_id,
-                  matrixRoomInfo: {
-                    roomId: room_id,
-                    name: "direct_chat",
-                    leave_members: [],
-                    membersInfo,
-                    members: [myMatrixID, otherMatrixId],
-                  },
-                })
-              )
-            : await thunkAPI.dispatch(
-                onCreateChannel({
-                  name: get(roomName, "name", ""),
-                  description: "",
-                  is_direct: get(roomName, "is_direct", ""),
-                  bookmarks: [],
-                  matrixRoomId: get(data, "room_id", ""),
-                  matrixRoomInfo: {
-                    leave_members: [],
-                    roomId: get(data, "room_id", ""),
-                    name: get(roomName, "name", ""),
-                    members: [myMatrixID],
-                    membersInfo,
-                  },
-                })
-              );
-        }
-      }
-
-      const topic = await client.getStateEvent(
-        data.room_id,
-        "m.room.topic",
+      const organizationId = get(
+        thunkAPI.getState(),
+        "workspaceStore.currentWorkspaceData.organizationId",
         ""
       );
+      var inviteId = "";
+      if (roomName.is_direct) {
+        // if (roomName.invite.length) {
+        //   inviteId = roomName.invite[0];
+        //   roomName.invite = [
+        //     "@" + roomName.invite[0] + ":onetab.ai",
+        //     "@" + "wynnadmin" + ":onetab.ai",
+        //   ];
+        // }
+      } else {
+        // roomName.invite = ["@" + "wynnadmin" + ":onetab.ai"];
+      }
+      // var data = await client.createRoom({
+      //   ...roomName,
+      //   creation_content: { workspace_id },
+      // });
+      // if (roomName.is_direct) {
+      // } else {
+      //   delete roomName.invite;
+      // }
+      // if (get(data, "room_id", false)) {
+      //   const { chatClient, chatQuery } = chatService;
+      //   get(roomName, "invite", []).map(async (userId) => {
+      //     await chatClient.query({
+      //       query: chatQuery.inviteUserOnChat,
+      //       variables: { matrixName: inviteId, roomId: get(data, "room_id", "") },
+      //     });
+      //   });
+      //   await thunkAPI.dispatch(
+      //     onCreateChannel({
+      //       name: get(roomName, "name", ""),
+      //       description: "",
+      //       is_direct: get(roomName, "is_direct", ""),
+      //       bookmarks: [],
+      //       matrixRoomId: get(data, "room_id", ""),
+      //       matrixRoomInfo: {
+      //         members: [
+      //           "@" +
+      //           get(thunkAPI.getState(), "user.userData.matrixUsername", "") +
+      //           ":onetab.ai",
+      //         ],
+      //       },
+      //     })
+      //   );
+      // }
+
+      // const topic = await client.getStateEvent(data.room_id, "m.room.topic");
+      console.log(
+        "key i need ",
+        {
+          roomName: get(roomName, "name", ""),
+          user: roomName.is_direct
+            ? ["@" + roomName.invite[0] + ":matrix.onetab.ai"]
+            : [],
+          isDirect: roomName.is_direct,
+          workspaceId: workspace_id,
+        },
+        "\norganizationId",
+        organizationId
+      );
+      const { chatClient, chatQuery } = chatService;
+      const res = await chatClient.query({
+        query: chatQuery.createNewChannels,
+        variables: {
+          roomName: get(roomName, "name", ""),
+          user: roomName.is_direct
+            ? ["@" + roomName.invite[0] + ":matrix.onetab.ai"]
+            : [],
+          isDirect: roomName.is_direct,
+          workspaceId: workspace_id,
+        },
+        context: {
+          headers: {
+            organizationId,
+          },
+        },
+      });
       thunkAPI.dispatch(getRooms());
-      return data;
+      setTimeout(() => {
+        thunkAPI.dispatch(getChannels());
+      }, 1000);
+      console.log("res========", res);
+      return res;
     } catch (error) {
-      console.log("createRoom ", error);
+      console.log("create room error", error);
     }
   }
 );
@@ -2939,6 +2951,10 @@ export const chatStoreSlice = createSlice({
         state.createRoomModal = false;
         state.directChatInviteModal = false;
         state.createRoomStatus = "loaded";
+        const result = action.payload.data.createPrivateRoomForUser;
+        // console.log("result==========>",result);
+        state.selectedRoom = result;
+     
       })
       .addCase(createRoom.rejected, (state, action) => {
         state.createRoomStatus = "error";

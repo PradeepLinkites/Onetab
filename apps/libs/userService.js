@@ -30,7 +30,6 @@ const getUser = gql`
       onboarding_flow
       is_invited
       timezone
-      agoraUid
       plan {
         maxUsers
         _id
@@ -259,7 +258,6 @@ const searchMail = gql`
       organizationDomain
       address
       profileImageUrl
-      agoraUid
       created_at
       updated_at
       matrixUsername
@@ -694,7 +692,6 @@ const users = gql`
       matrixUsername
       matrixPassword
       onboarding_flow
-      agoraUid
       is_active
       is_invited
       plan {

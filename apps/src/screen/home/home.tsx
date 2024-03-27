@@ -112,6 +112,7 @@ export const Home = () => {
         channelData.data.data !== undefined
       ) {
         const channelListing = channelData.data.data.channels;
+        console.log('data for the channels',channelData.data.data)
         let myDirectChannels = channelListing?.filter((mychannels: any) => {
           return mychannels?.matrixRoomInfo?.members?.includes(matrixUserId);
         });
