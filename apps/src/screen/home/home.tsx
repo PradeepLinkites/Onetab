@@ -21,6 +21,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
+  chatStoreActions,
   fetchAllMessages,
   getChannels,
   getCircularReplacer,
@@ -192,12 +193,14 @@ export const Home = () => {
     setIsDirect(false);
     setSelectedItem(item);
     dispatch(resetStatus({}));
+    dispatch(chatStoreActions.setSelectedRoomChannel(item))
   };
 
   const openDirect = (item: any) => {
     setIsDirect(true);
     setSelectedItem(item);
     dispatch(resetStatus({}));
+    dispatch(chatStoreActions.setSelectedRoomChannel(item))
   };
 
   useEffect(() => {

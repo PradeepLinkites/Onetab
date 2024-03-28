@@ -17,7 +17,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { BackIcon, Check, UnCheck } from "../../assets";
 import { status } from "../home";
 import { useDispatch, useSelector } from "react-redux";
-import { getRoom, getUserColor, onInviteUser } from "../../../store";
+import { getChannels, getRoom, getUserColor, onInviteUser } from "../../../store";
 import { Dispatch } from "redux";
 
 export const AddPeople = (props) => {
@@ -92,9 +92,11 @@ export const AddPeople = (props) => {
     );
     console.log("addUserToChannel", array);
     dispatch(getRoom({ roomId: room_id }));
-    array.map(async (item: any, index: number) => {
-      await onInviteUser(room_id, item.matrixUsername);
-    });
+    const usernames = array.map(item => {return item.matrixUsername})
+    // array.map(async (item: any, index: number) => {
+    //   await onInviteUser(room_id, item.matrixUsername);
+    // });
+    onInviteUser(room_id, usernames)
     navigation.goBack();
   };
 

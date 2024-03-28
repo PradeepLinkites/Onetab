@@ -305,9 +305,12 @@ async function getRoomsEvent(thunkAPI: any) {
   client.on(ClientEvent.Event, async function (event: any) {
     // console.log("My Event ==> ", event);
     //console.log("age ",get(event, "event.unsigned.age", 0))
-    const room = get(thunkAPI.getState(), "chatStore.room", "");
+    const room =
+      get(thunkAPI.getState(), "chatStore.room", "") ??
+      client.getRoom(event.event.room_id);
     const rooms = get(thunkAPI.getState(), "chatStore.rooms", "");
     const threadModal = get(thunkAPI.getState(), "chatStore.threadModal", "");
+    // console.log("My Event ==> ", event,event.getType(),room,client.getRoom(event.event.room_id) );
     thunkAPI.dispatch(chatStoreActions.setForceUpdate(null));
     //if (get(event, "event.unsigned.age", 0) < 1000) {
     if (event.getType() === "m.receipt") {
@@ -393,7 +396,7 @@ async function getRoomsEvent(thunkAPI: any) {
         room.roomID === get(event.event.room_id, "")
       ) {
         console.log("data room", event.event.room_id);
-        thunkAPI.dispatch(syncChannel({ ...room }));
+        await thunkAPI.dispatch(syncChannel({ ...room }));
       }
     }
 
@@ -677,10 +680,11 @@ export const getRoom = createAsyncThunk(
     try {
       const room = client.getRoom(roomId);
       // client.getStateEvent(roomId, "")
+      console.log("rooom matrix", room);
       if (room === null) {
         setTimeout(async () => {
           try {
-            const memberStatus = await client.getJoinedRoomMembers(roomId);
+            // const memberStatus = await client.getJoinedRoomMembers(roomId);
             thunkAPI.dispatch(getRoom({ roomId }));
           } catch (e: any) {
             // message.error("User is not a member of selected Channel");
@@ -1190,10 +1194,10 @@ export const createRoom = createAsyncThunk(
           },
         },
       });
-      thunkAPI.dispatch(getRooms());
       thunkAPI.dispatch(
         getChannel({ roomId: res.data.createPrivateRoomForUser.matrixRoomId })
       );
+      thunkAPI.dispatch(getRooms());
       setTimeout(() => {
         thunkAPI.dispatch(getChannels());
       }, 1000);
@@ -2242,6 +2246,7 @@ export const resetStatus = createAsyncThunk(
       thunkAPI.dispatch(chatStoreActions.setRoomStatus(false));
       thunkAPI.dispatch(chatStoreActions.setLoadMoreStatus(false));
       thunkAPI.dispatch(chatStoreActions.setLoadMoreList(false));
+      thunkAPI.dispatch(chatStoreActions.setSelectedRoomChannel({}))
       return true;
     } catch (e) {
       return false;
@@ -2726,6 +2731,9 @@ export const chatStoreSlice = createSlice({
   reducers: {
     add: chatStoreAdapter.addOne,
     remove: chatStoreAdapter.removeOne,
+    setSelectedRoomChannel: (state, action) => {
+      state.selectedRoom = action.payload;
+    },
     setLoadingStatus: (state, action) => {
       state.loadingStatus = action.payload;
     },
@@ -3042,6 +3050,7 @@ export const chatStoreSlice = createSlice({
         state.roomStatus = "loading";
       })
       .addCase(getRoom.fulfilled, (state, action) => {
+        console.log("room =========", action.payload);
         state.room = action.payload.room;
 
         // setTimeout(() => {

@@ -36,6 +36,7 @@ export const ChannelList = (props: ChannelListPropType) => {
   const [newChannelName, setNewChannelName] = React.useState("");
   const { newChannelData } = useSelector((state: any) => ({
     newChannelData: state.chatStore.newChannelData,
+    channelList: state.chatStore,
   }));
   const channelProgress = useSharedValue(1);
   React.useEffect(() => {
@@ -56,24 +57,36 @@ export const ChannelList = (props: ChannelListPropType) => {
       paddingLeft: 12,
     };
   });
-  useEffect(() => {
-    if (newChannelData._id !== undefined) {
+
+  const getChannelsDetail = async () => {
+    try {
       console.log("createChannelData", newChannelData);
-      // dispatch(getChannels());
+      await dispatch(getChannels());
       setIsCreateChannelmodalVisible(false);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    console.log("%%%%%%%%%%%%: ", newChannelData);
+    if (newChannelData._id !== undefined) {
+      getChannelsDetail();
     }
   }, [newChannelData]);
-  const createChannel = () => {
-    if (newChannelName === "") {
-      alert("Channel name can not be Empty");
-    } else {
-      dispatch(
-        createRoom({
-          name: newChannelName,
-          is_direct: false,
-        })
-      );
-      setNewChannelName("");
+  const createChannel = async () => {
+    try {
+      if (newChannelName === "") {
+        alert("Channel name can not be Empty");
+      } else {
+        await dispatch(
+          createRoom({
+            name: newChannelName,
+            is_direct: false,
+          })
+        );
+        setNewChannelName("");
+        // dispatch(setNewChannelData({}))
+      }
+    } catch (error) {
+      console.log("Error in creating channel: ", error);
     }
   };
   return (
@@ -93,7 +106,10 @@ export const ChannelList = (props: ChannelListPropType) => {
             <Pressable
               key={item.name + index}
               style={[styles.itemContainerStyle, { paddingLeft: 5 }]}
-              onPress={() => channelProgress.value === 1 && openChannel(item)}
+              onPress={() => {
+                channelProgress.value === 1 && openChannel(item)
+                
+              }}
             >
               {/* <Hash_Icon /> */}
               {item.name === "public channel" ? (
