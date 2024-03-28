@@ -192,7 +192,11 @@ export const createInvites = createAsyncThunk(
     const data = await userClient.mutate({
       mutation: userQuery.createInvites,
       variables: {
-        createUserScopeInput: { ...createUserScopeInput, workspaceId },
+        createUserScopeInput: {
+          ...createUserScopeInput,
+          workspaceId,
+          modulesID: [],
+        },
       },
       fetchPolicy: "network-only",
     });
