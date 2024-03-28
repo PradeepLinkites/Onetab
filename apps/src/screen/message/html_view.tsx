@@ -49,10 +49,12 @@ export const HtmlView = (props) => {
     userData,
   } = props;
 
-  console.log("Html type ==> ", userData);
+  // console.log("Html type ==> ", MessageInfo);
   const dispatch = useDispatch<Dispatch<any>>();
-  const { userDataUsingMatrixId } = useSelector((state: any) => ({
+  const { userDataUsingMatrixId, channelData } = useSelector((state: any) => ({
     userDataUsingMatrixId: state.userStore.userDataUsingMatrixId,
+
+    channelData: state.chatStore.channelData,
   }));
 
   useEffect(() => {
@@ -183,6 +185,16 @@ export const HtmlView = (props) => {
     // }
   }
 
+  const isChatSaved = (item: any) => {
+    const savedChat = channelData?.data?.data?.channels?.filter(
+      (items: any) => items.matrixRoomId === item.roomId
+    )[0].save_messages;
+
+    const includedChat = savedChat.filter((chat) => chat.event_id === item.eventId)
+    console.log("############: ", includedChat,item)
+    return includedChat.length > 0 
+  };
+
   return (
     <View>
       {
@@ -197,11 +209,19 @@ export const HtmlView = (props) => {
               onLongPress={() => {
                 setEvent(item);
                 setShowOptionModal(true);
-                console.log("Render view long Press");
+                // console.log(
+                //   "Render view long Press",
+                //   item.roomId,
+                //   item,
+                //   "\ndata=====",
+                //   channelData?.data?.data?.channels?.filter(
+                //     (items: any) => items.matrixRoomId === item.roomId
+                //   )[0].save_messages
+                // );
               }}
               style={{
                 width: Dimensions.get("window").width * 0.85,
-                backgroundColor: "#FFFFFF",
+                backgroundColor: isChatSaved(item) ? '#EAF5F9' : "#FFFFFF",
               }}
             >
               <RenderHtml

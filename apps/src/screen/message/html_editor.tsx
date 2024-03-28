@@ -1025,47 +1025,50 @@ export const HtmlEditorView = (props) => {
                       const achorTextRegex = /<a(?:[^>]*?)>(.*?)<\/a>/gi;
                       const achorIdRegex =
                         /<a[^>]*?\sid="(.*?)"(?:[^>]*?)>(?:.*?)<\/a>/gi;
-                      for (let i = 0; i < matchedMentions.length; i++) {
-                        let matchName;
-                        let matchId;
-                        let achorMatchId, anchorMatchName;
-                        while (
-                          (matchId = achorIdRegex.exec(matchedMentions[i])) !==
-                          null
-                        ) {
-                          const id = matchId[1];
-                          console.log("-=-==-=-==-=- ", id);
-                          achorMatchId = id.toString();
-                        }
-                        while (
-                          (matchName = achorTextRegex.exec(
-                            matchedMentions[i]
-                          )) !== null
-                        ) {
-                          const anchorText = matchName[1];
-                          console.log("%%%%%%%%%%: ", anchorText);
-                          anchorMatchName = anchorText;
-                        }
+                      if (matchedMentions && matchedMentions.length) {
+                        for (let i = 0; i < matchedMentions.length; i++) {
+                          let matchName;
+                          let matchId;
+                          let achorMatchId, anchorMatchName;
+                          while (
+                            (matchId = achorIdRegex.exec(
+                              matchedMentions[i]
+                            )) !== null
+                          ) {
+                            const id = matchId[1];
+                            console.log("-=-==-=-==-=- ", id);
+                            achorMatchId = id.toString();
+                          }
+                          while (
+                            (matchName = achorTextRegex.exec(
+                              matchedMentions[i]
+                            )) !== null
+                          ) {
+                            const anchorText = matchName[1];
+                            console.log("%%%%%%%%%%: ", anchorText);
+                            anchorMatchName = anchorText;
+                          }
 
-                        const usernameFromRoomInfo = memberData[achorMatchId];
-                        console.log(
-                          ")))))))))",
-                          usernameFromRoomInfo,
-                          anchorMatchName
-                        );
-
-                        if (
-                          usernameFromRoomInfo !==
-                          anchorMatchName.replace("@", "")
-                        ) {
+                          const usernameFromRoomInfo = memberData[achorMatchId];
                           console.log(
-                            "!!!!!!!!!!! unmatched data found",
+                            ")))))))))",
+                            usernameFromRoomInfo,
                             anchorMatchName
                           );
-                          finalMessage = finalMessage.replace(
-                            matchedMentions[i],
-                            anchorMatchName
-                          );
+
+                          if (
+                            usernameFromRoomInfo !==
+                            anchorMatchName.replace("@", "")
+                          ) {
+                            console.log(
+                              "!!!!!!!!!!! unmatched data found",
+                              anchorMatchName
+                            );
+                            finalMessage = finalMessage.replace(
+                              matchedMentions[i],
+                              anchorMatchName
+                            );
+                          }
                         }
                       }
                       console.log("*********", finalMessage);

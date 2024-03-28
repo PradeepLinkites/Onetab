@@ -1002,7 +1002,7 @@ export const sendMessage = async (
     //thunkAPI={}
     const data = client.sendEvent(roomId, null, EventType.RoomMessage, {
       body: message,
-      "org.matrix.msc1767.text": message,
+      // "org.matrix.msc1767.text": message,
       msgtype: "m.text",
       info: {
         organization_id: organizationId,
@@ -1072,7 +1072,7 @@ export const sendThreadMessage = async (
   try {
     client.sendEvent(roomId, "m.room.message", {
       body: message,
-      "org.matrix.msc1767.text": message,
+      // "org.matrix.msc1767.text": message,
       msgtype: "m.text",
       info: {
         organization_id: organizationId,
@@ -1343,12 +1343,17 @@ export const updateChannel = createAsyncThunk(
         delete updateChannelInput._id;
       }
       // updateChannelInput.description = datas;
+      console.log('updateChannelInput','!wBpTCjffNXdZbjmHfh:matrix.onetab.ai',"\n",roomId)
       const { chatClient, chatQuery } = chatService;
       // if (roomId && channel_id) {
       const data = await chatClient.mutate({
         mutation: chatQuery.updateChannel,
         variables: { updateChannelInput },
       });
+      roomId =
+      "matrixRoomId" in updateChannelInput
+        ? updateChannelInput.matrixRoomId
+        : roomId;
       thunkAPI.dispatch(getChannel({ roomId }));
       // dispatch(updateChannel({description :"trial"}));
       thunkAPI.dispatch(getChannels());
@@ -3045,11 +3050,11 @@ export const chatStoreSlice = createSlice({
                   {}
                 );
               } else {
-                // state.selectedRoom = get(
-                //   action,
-                //   `payload.data.data.channels[0]`,
-                //   {}
-                // );
+                state.selectedRoom = get(
+                  action,
+                  `payload.data.data.channels[0]`,
+                  {}
+                );
               }
             }
           }

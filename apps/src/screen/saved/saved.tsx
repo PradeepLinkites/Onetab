@@ -151,20 +151,24 @@ export const Saved = () => {
 
   const moment = require('moment');
 
-  function formatDateTime(input) {
-    const inputDateTime = moment(input, 'M/D/YYYY, h:mm:ss A');
-    const currentDateTime = moment();
+  function formatDateTime(utcTimestamp) {
+    // const inputDateTime = moment(input, 'M/D/YYYY, h:mm:ss A');
+    // const currentDateTime = moment();
 
-    const inputWeek = inputDateTime.isoWeek();
-    const currentWeek = currentDateTime.isoWeek();
+    // const inputWeek = inputDateTime.isoWeek();
+    // const currentWeek = currentDateTime.isoWeek();
 
-    if (inputWeek !== currentWeek) {
-      return inputDateTime.format('MMM D, YYYY  h:mmA');
-    } else if (inputDateTime.isSame(currentDateTime, 'day')) {
-      return inputDateTime.fromNow();
-    } else {
-      return inputDateTime.format('ddd');
-    }
+    // if (inputWeek !== currentWeek) {
+    //   return inputDateTime.format('MMM D, YYYY  h:mmA');
+    // } else if (inputDateTime.isSame(currentDateTime, 'day')) {
+    //   return inputDateTime.fromNow();
+    // } else {
+    //   return inputDateTime.format('ddd');
+    // }
+   
+const date = new Date(utcTimestamp);
+const localDateTimeString = date.toLocaleString();
+return localDateTimeString;
   }
 
 
@@ -194,6 +198,7 @@ export const Saved = () => {
                 right: 0,
               }}
             >
+              {/* {formatDateTime(item.time)} */}
               {formatDateTime(item.time)}
               {/* {item.time
                === undefined || item.time === ""

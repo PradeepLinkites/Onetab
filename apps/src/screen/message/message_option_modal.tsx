@@ -114,11 +114,12 @@ export const MessageOptionModal = ({
                   (item: any) => item.event_id !== event?.eventId
                 )
               ) {
-                const data = {
+                let data = {
                   ...JSON.parse(JSON.stringify(timeline[0])),
                   matrixUserId: userId,
-                  date: new Date().toLocaleString(),
+                  date: new Date().getTime(),
                 };
+                data.origin_server_ts = `${data.origin_server_ts}`
                 NewArray = channelData.concat([data]);
               } else {
                 NewArray = channelData.filter(

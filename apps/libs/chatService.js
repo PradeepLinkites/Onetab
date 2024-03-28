@@ -487,7 +487,7 @@ const getEventById = gql`
     getEventById(eventId: $eventId) {
       _id
       channelName
-      agoraToken
+      
       meetId
     }
   }
