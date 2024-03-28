@@ -33,7 +33,7 @@ export const Saved = () => {
   }));
 
   const channelDataArray = channelData?.data?.channels;
-  console.log("$$$$$$$$$$$: ", channelDataArray);
+  // console.log("$$$$$$$$$$$: ", channelDataArray);
   const filterMemberData = channelDataArray?.filter(
     (item: any) => item.matrixRoomInfo !== undefined
   );
@@ -46,23 +46,27 @@ export const Saved = () => {
   const [showOptionModal, setShowOptionModal] = React.useState<boolean>(false);
 
   const getUniqueKeyValuePairs = (getMemberData: any) => {
-    const flattenedDict = getMemberData.reduce(
-      (accumulator: any, data: any) => {
-        if (typeof data === "object" && data !== null) {
-          Object.entries(data).forEach(([key, value]) => {
-            accumulator[key] = value;
-          });
-        }
-        return accumulator;
-      },
-      {}
-    );
-
-    const uniquePairs = {};
-    for (const [key, value] of Object.entries(flattenedDict)) {
-      uniquePairs[key] = value;
+    if(getMemberData) {
+      const flattenedDict = getMemberData.reduce(
+        (accumulator: any, data: any) => {
+          if (typeof data === "object" && data !== null) {
+            Object.entries(data).forEach(([key, value]) => {
+              accumulator[key] = value;
+            });
+          }
+          return accumulator;
+        },
+        {}
+      );
+  
+      const uniquePairs = {};
+      for (const [key, value] of Object.entries(flattenedDict)) {
+        uniquePairs[key] = value;
+      }
+      return uniquePairs;
+    } else {
+      return {}
     }
-    return uniquePairs;
   };
 
   const uniquePairs = getUniqueKeyValuePairs(getMemberData);

@@ -1071,7 +1071,13 @@ export const ChannelMessage = (props: any) => {
               <BackIcon />
             </TouchableOpacity>
 
-            <View style={styles.headerLeftView}>
+            <TouchableOpacity style={styles.headerLeftView} 
+            onPress={() => {
+              navigation.navigate(RootRoutes.ChannelInfo, {
+                item: ChannelInfo,
+              });
+            }}
+            >
               {ChannelInfo.status === channelStatus.active ? (
                 <Octicons name="hash" size={20} color="#656971" />
               ) : (
@@ -1079,7 +1085,7 @@ export const ChannelMessage = (props: any) => {
               )}
 
               <Text style={styles.headerTitle}>{ChannelInfo.name}</Text>
-            </View>
+            </TouchableOpacity>
           </View>
 
           <Pressable

@@ -19,6 +19,7 @@ import { status } from "../home";
 import { useDispatch, useSelector } from "react-redux";
 import { getChannels, getRoom, getUserColor, onInviteUser } from "../../../store";
 import { Dispatch } from "redux";
+import { BottomRoutes, RootRoutes } from "../../navigation/routes";
 
 export const AddPeople = (props) => {
   const { getInvitesData, usersColor } = useSelector((state: any) => ({
@@ -97,7 +98,8 @@ export const AddPeople = (props) => {
     //   await onInviteUser(room_id, item.matrixUsername);
     // });
     onInviteUser(room_id, usernames)
-    navigation.goBack();
+    // navigation.goBack();
+    navigation.navigate(BottomRoutes.Home)
   };
 
   const renderItem = ({ item }) => {
