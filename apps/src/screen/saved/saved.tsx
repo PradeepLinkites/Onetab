@@ -33,9 +33,14 @@ export const Saved = () => {
   }));
 
   const channelDataArray = channelData?.data?.channels;
-  const getMemberData = channelDataArray?.map(
-    (item: any) => item.matrixRoomInfo.membersInfo
+  console.log("$$$$$$$$$$$: ", channelDataArray);
+  const filterMemberData = channelDataArray?.filter(
+    (item: any) => item.matrixRoomInfo !== undefined
   );
+  const getMemberData = filterMemberData?.map((item: any) => {
+    // console.log("^^^^^^^^: ", item.matrixRoomInfo);
+    return item.matrixRoomInfo.membersInfo;
+  });
 
   const [value, setValue] = useState<any>();
   const [showOptionModal, setShowOptionModal] = React.useState<boolean>(false);
@@ -117,8 +122,6 @@ export const Saved = () => {
     }
   };
 
-
-
   const baseStyles = {
     //fontFamily: "PlusJakartaSans-Medium",
     fontSize: 14,
@@ -149,7 +152,7 @@ export const Saved = () => {
     }).start();
   }, [fadeAnim]);
 
-  const moment = require('moment');
+  const moment = require("moment");
 
   function formatDateTime(utcTimestamp) {
     // const inputDateTime = moment(input, 'M/D/YYYY, h:mm:ss A');
@@ -165,15 +168,14 @@ export const Saved = () => {
     // } else {
     //   return inputDateTime.format('ddd');
     // }
-   
-const date = new Date(utcTimestamp);
-const localDateTimeString = date.toLocaleString();
-return localDateTimeString;
+
+    const date = new Date(utcTimestamp);
+    const localDateTimeString = date.toLocaleString();
+    return localDateTimeString;
   }
 
-
   const renderItem = ({ item, index }) => {
-    console.log("renderItem ITEM TIME", item.time)
+    console.log("renderItem ITEM TIME", item.time);
     return (
       <View key={item._id} style={styles.topView}>
         {/*mention title*/}

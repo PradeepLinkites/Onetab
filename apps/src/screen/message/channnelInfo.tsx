@@ -29,6 +29,7 @@ import { Dispatch } from "redux";
 export const ChannnelInfo = (props) => {
   const ChannelInfo = props?.route?.params?.item;
   const navigation = useNavigation<any>();
+  
   const dispatch = useDispatch<Dispatch<any>>();
   const ChannelMembers = ChannelInfo.matrixRoomInfo.membersInfo;
   const { usersColor, room, matrixUserId, getInvitesData } = useSelector(
