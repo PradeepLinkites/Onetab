@@ -10,6 +10,7 @@ import {
   Alert,
   View,
   Platform,
+  Linking,
 } from "react-native";
 import {
   GoogleSignin,
@@ -243,6 +244,14 @@ export const SignIn = () => {
       : navigation.navigate(RootRoutes.Verification_Screen);
   };
 
+  const signupUsingWeblink = async () => {
+    try {
+      await Linking.openURL("https://stg-connect.onetab.ai/");
+    } catch (error) {
+      alert("Error in opening the Web app for signup");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -315,6 +324,17 @@ export const SignIn = () => {
               Sign in with Apple
             </Text>
           </TouchableOpacity>
+
+          <Text
+            allowFontScaling={false}
+            style={[
+              styles.googleText,
+              { marginTop: 15, color: "blue", textDecorationLine: "underline" },
+            ]}
+            onPress={signupUsingWeblink}
+          >
+            Sign up
+          </Text>
         </View>
       </View>
     </SafeAreaView>
