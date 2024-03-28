@@ -17,6 +17,7 @@ import { Dispatch } from "redux";
 import {
   chatStoreActions,
   createRoom,
+  getChannels,
   getRoom,
   getUserColor,
   onInviteUser,
@@ -50,12 +51,14 @@ export const NewChannnel = () => {
     usersColor,
     matrixUserId,
     channelData,
+    newChannelData,
   } = useSelector((state: any) => ({
     getInvitesData: state.userStore.getInvitesData,
     createChannelData: state.chatStore.createChannelData,
     usersColor: state.userStore.usersColor,
     matrixUserId: state.userStore.matrixUserId,
     channelData: state.chatStore.channelData,
+    newChannelData: state.chatStore.newChannelData,
   }));
   const DataofChannel =
     channelData.data.data.channels[channelData.data.data.channels.length - 1];
@@ -66,17 +69,23 @@ export const NewChannnel = () => {
       "@" + item.matrixUsername + ":matrix.onetab.ai" !== matrixUserId
   );
   useEffect(() => {
-    if (createChannelData.data !== undefined && focus) {
+    if (newChannelData._id !== undefined && focus) {
+      // console.log(
+      //   "createChannelData",
+      //   createChannelData.data.createChannel._id
+      // );
       console.log(
         "createChannelData",
-        createChannelData.data.createChannel._id
+        newChannelData._id
       );
-      setCreateChannelId(createChannelData.data.createChannel._id);
+      setCreateChannelId(newChannelData._id);
+      // setCreateChannelId(createChannelData.data.createChannel._id);
+      dispatch(getChannels());
       // setCreateButtonOnOff(false);
       // setAddUser(false);
-      addUserToChannel();
+      // addUserToChannel();
     }
-  }, [createChannelData]);
+  }, [ newChannelData]);
   useEffect(() => {
     if (DataofChannel._id === createChannelId) {
       console.log(DataofChannel.matrixRoomInfo.members);
@@ -97,9 +106,6 @@ export const NewChannnel = () => {
         createRoom({
           name: searchPhrase,
           is_direct: false,
-          visibility: true,
-          preset: "trusted_private_chat",
-          topic: "",
         })
       );
     }

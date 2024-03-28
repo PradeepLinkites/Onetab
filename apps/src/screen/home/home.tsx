@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
   fetchAllMessages,
+  getChannels,
   getCircularReplacer,
   resetStatus,
   resetThreadStatus,
@@ -280,6 +281,7 @@ export const Home = () => {
           openChannel={openChannel}
           navigation={navigation}
           channelMessageList={channelMessageList}
+          dispatch={dispatch}
         />
         <Divider />
         <DirectList
@@ -288,7 +290,7 @@ export const Home = () => {
           openDirect={openDirect}
         />
         <Divider />
-        <AppList appData={appData} />
+        {/* <AppList appData={appData} /> */}
       </ScrollView>
       <NewMessageBubble setModalIsTrue={setModalIsTrue} />
       <NewMessageScreen
